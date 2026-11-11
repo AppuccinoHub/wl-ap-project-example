@@ -64,6 +64,11 @@ main{max-width:1240px;margin:0 auto;padding:24px 20px 40px}
 @media (max-width:860px){.grid2,.grid3{grid-template-columns:1fr}}
 .panel{border:1.5px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .panel.soft{background:var(--soft);border-color:transparent}
+.nextcard{border:2px solid var(--accent);background:var(--soft)}
+.nextcard h2{margin:0 0 4px}
+.nextcard .meter{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin:10px 0 6px}
+.nextcard .meter i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.nextcard .btn{margin-top:6px}
 .panel.key{border:2px solid var(--accent)}
 .stack{display:flex;flex-direction:column;gap:14px;min-width:0}
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
@@ -867,8 +872,17 @@ async function pruneQA(keep) {
 /* ============================ views ============================ */
 const views = {}, after = {};
 
+const STEP_IDS = ["trep", "dove", "fidarsi", "scheda", "piano", "ppr", "qa"];
+const STEP_WHY = { trep: "Learn to tell products, practices and perspectives apart. Worth 2 points in both speaking tasks.", dove: "Practice finding sources in your language.", fidarsi: "Practice judging whether a source is worth using.", scheda: "Practice recording a source and citing it.", piano: "Choose your factors and plan your research.", ppr: "Write your key words and rehearse the presentation.", qa: "Practice answering four questions you have not seen." };
+function nextCard() {
+  if (isExample()) return "";
+  const seen = (F("me.seen") || "").split(",").filter(Boolean), done = STEP_IDS.filter(i => seen.indexOf(i) >= 0).length;
+  const nx = STEP_IDS.find(i => seen.indexOf(i) < 0), r = nx && ROUTES.find(x => x.id === nx);
+  return `<div class="panel nextcard noprint" data-nofold><div class="muted small"><b>Your next step</b></div>${r ? `<h2>${esc(r.title)}</h2><p>${STEP_WHY[nx]}</p><a class="btn primary" href="#${nx}">${done ? "Continue" : "Start"}: ${esc(r.title)}</a>` : `<h2>All seven steps opened</h2><p>Go back to any step to practice again, or print your work.</p><a class="btn primary" href="#lavoro">Save and print my work</a>`}<div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="7" aria-valuenow="${done}" aria-label="Steps opened"><i style="width:${Math.round(done / 7 * 100)}%"></i></div><div class="muted small">${done} of 7 steps opened. This counts screens you have opened, not what you have mastered.</div></div>`;
+}
 views.start = () => `
-${head("Start", "What does the exam ask of me?", "Five parts. The two blue boxes are your project: 35% of your score. College Board sets the order of the sections on exam day, so check it with your teacher and your language's Course and Exam Description.")}
+${head("Start", "What does the exam ask of me?", "Your project is the two blue boxes: 35% of your score.")}
+${nextCard()}
 ${modeSwitch()}
 <div class="panel soft noprint"><h2>Want to see a finished project first?</h2><p>The worked example is one complete run of the course project, in English, on 1990s hip-hop in New York and New Jersey. It shows exactly which box each piece of information goes in. It is read-only and never saved. Pick a different community for your own project.</p><button data-act="mode" data-a="example">Open the worked example</button></div>
 <div class="exam">
@@ -895,7 +909,8 @@ ${modeSwitch()}
   <div class="panel soft"><h2>Dates</h2>
     <p><b>${PACK.dates.packet}</b> · College Board releases the prompt and the sources.</p>
     <p><b>${PACK.dates.pprDue}, ${PACK.dates.pprDueTime}</b> · You type your PPR into the AP Digital Portfolio.</p>
-    <p><b>${PACK.dates.exam}</b> · Exam day. You have access to your PPR while you present.</p></div>
+    <p><b>${PACK.dates.exam}</b> · Exam day. You have access to your PPR while you present.</p>
+    <p class="muted small">College Board sets the order of the sections on exam day. Check it with your teacher and your language's Course and Exam Description.</p></div>
 </div>
 <div class="panel"><h2>My name</h2>${tx("me.name", "First and last name. It prints at the top of everything you print.")}</div>
 ${langPanel()}
@@ -1098,7 +1113,7 @@ async function rehearsal() {
 }
 
 views.qa = () => `
-${head("My project 3 of 3", "Four questions I haven't seen", `On exam day each question is asked in ${LN()}, plays twice, and you have 40 seconds to answer. Here the questions come from an English practice bank (your teacher says them aloud in ${LN()}, or you read and answer in ${LN()}), or from your teacher's own questions in ${LN()}, which the app speaks. A different set every time.`)}
+${head("My project 3 of 3", "Four questions I haven't seen", `On exam day each question plays twice in ${LN()} and you have 40 seconds to answer. Pick where the questions come from below. You get a different set every time.`)}
 <div class="grid2">
   <div class="panel" id="sim" data-nofold></div>
   <div class="stack">
@@ -1120,7 +1135,7 @@ ${foot("qa", "")}`;
 function simIdle(note) {
   const tq = F("me.qsrc") === "teacher";
   return `<h2>Simulator</h2><div class="steps">${[1, 2, 3, 4].map(n => `<div>Question ${n}</div>`).join("")}</div>
-  <label class="f">Where the questions come from<select data-k="me.qsrc" id="f-me.qsrc"><option value="bank" ${tq ? "" : "selected"}>English practice bank (shown on screen)</option><option value="teacher" ${tq ? "selected" : ""}>My teacher's questions in ${esc(LN())} (spoken aloud)</option></select></label>
+  <label class="f">Where the questions come from<select data-k="me.qsrc" id="f-me.qsrc"><option value="bank" ${tq ? "" : "selected"}>English practice bank</option><option value="teacher" ${tq ? "selected" : ""}>My teacher's questions</option></select></label>
   ${tq ? `<label class="f">My teacher's questions, one per line (at least four)<span class="h">Type or paste the questions your teacher wrote in ${esc(LN())}. The app picks four at random and speaks each one twice with a voice for that language. The app never writes or translates questions.</span><textarea data-k="me.tq" id="f-me.tq" lang="${LC()}" class="tall">${esc(F("me.tq"))}</textarea></label>
   <label class="chk"><input type="checkbox" data-k="me.showq" ${F("me.showq") ? "checked" : ""}>Show each question as text while it plays (hearing accommodation: only if your teacher tells you to)</label>`
   : `<p class="muted small">Each question appears on screen in English for a few seconds. Your teacher can say it aloud in ${esc(LN())}, or you read it and answer in ${esc(LN())}. The app does not translate for you.</p>
@@ -1409,6 +1424,7 @@ function render(keepScroll) {
   const eb = $("#exbar"); eb.hidden = !isExample();
   if (keepScroll && run && (id === "ppr" || id === "qa")) return; /* never redraw over a running timer */
   urls.forEach(u => URL.revokeObjectURL(u)); urls = [];
+  if (!isExample() && !locked && id !== "start" && ROUTES.some(x => x.id === id)) { const sb = bag("me.seen"), cur = (sb["me.seen"] || "").split(",").filter(Boolean); if (cur.indexOf(id) < 0) { cur.push(id); sb["me.seen"] = cur.join(","); save(); } }
   app.innerHTML = views[id](); fill(); if (after[id]) after[id](); if (isExample()) exampleFix(id); foldify(id);
   document.title = r.title + " · WL AP Research · " + PACK.themeName;
   if (keepScroll && id === current) window.scrollTo(0, y);
