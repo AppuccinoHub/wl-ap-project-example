@@ -1,0 +1,1423 @@
+<!doctype html>
+<html lang="en" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="google" content="notranslate">
+<meta name="author" content="Assunta Scotto">
+<meta name="copyright" content="Copyright (c) 2026 Assunta Scotto. All rights reserved.">
+<meta name="description" content="WL AP Research, a research-skills trainer for the AP World Language and Culture course project. Created by Assunta Scotto, 2026.">
+<title>WL AP Research</title>
+<link rel="icon" href="data:,">
+<!--
+  WL AP RESEARCH
+  Created by Assunta Scotto. Copyright (c) 2026 Assunta Scotto. All rights reserved.
+  First built November 2026. Version 2.0, November 10, 2026.
+  This notice stays with every copy of this file.
+-->
+<style>
+:root{
+  --bg:#FFFFFF; --soft:#F2F5FA; --ink:#16202E; --muted:#4B5567; --line:#C3CAD6;
+  --accent:#1D4ED8; --accent-dark:#1E3A8A; --accent-soft:#E8EEFC;
+  --good:#166534; --good-soft:#E3F3E8; --warn:#92400E; --warn-soft:#FDF0D9; --bad:#B42318; --bad-soft:#FCE9E6;
+  --r:8px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+}
+*{box-sizing:border-box}
+html{font-size:17px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.5}
+[hidden]{display:none!important}
+a{color:var(--accent)} a:hover{color:var(--accent-dark)}
+h1{font-size:1.75rem;line-height:1.2;margin:0}
+h2{font-size:1.2rem;line-height:1.3;margin:0}
+h3{font-size:1rem;margin:0}
+p{margin:0}
+.it{font-style:normal}
+.muted{color:var(--muted)}
+.small{font-size:.88rem}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:2px solid var(--ink)}
+.top-in{max-width:1320px;margin:0 auto;padding:6px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 18px}
+.brand{font-weight:700;font-size:1rem;white-space:nowrap}
+.nav{display:flex;flex-wrap:wrap;gap:2px;align-items:center}
+.nav .grp{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 2px 0 12px;padding-left:12px;border-left:1px solid var(--line);line-height:24px}
+.nav .grp:first-child{margin-left:0;padding-left:0;border-left:none}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 9px;border-radius:var(--r);text-decoration:none;color:var(--ink);font-size:.84rem;border:1px solid transparent;white-space:nowrap}
+.nav a:hover{background:var(--soft)}
+.nav a.on{background:var(--accent);color:#fff;font-weight:600}
+
+main{max-width:1240px;margin:0 auto;padding:24px 20px 40px}
+#app,#printonly{display:flex;flex-direction:column;gap:20px}
+.head{display:flex;flex-direction:column;gap:6px}
+.langrule{font-size:.8rem;color:var(--muted)}
+.goalrow{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr);gap:20px}
+@media (max-width:860px){.goalrow{grid-template-columns:1fr}}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.lead{color:var(--muted);max-width:75ch}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:860px){.grid2,.grid3{grid-template-columns:1fr}}
+.panel{border:1.5px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel.soft{background:var(--soft);border-color:transparent}
+.panel.key{border:2px solid var(--accent)}
+.stack{display:flex;flex-direction:column;gap:14px;min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.between{justify-content:space-between}
+.itbox{background:var(--soft);border-radius:var(--r);padding:10px 12px}
+.key .itbox{background:var(--accent-soft)}
+.note{background:var(--warn-soft);color:#5B2C06;border-radius:var(--r);padding:10px 14px;font-size:.92rem}
+.info{background:var(--accent-soft);border-radius:var(--r);padding:10px 14px;font-size:.92rem}
+
+/* controls */
+button,.btn{font:inherit;min-height:46px;padding:0 16px;border-radius:var(--r);border:1.5px solid var(--ink);background:var(--bg);color:var(--ink);cursor:pointer;font-size:.95rem;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+button:hover,.btn:hover{background:var(--soft);color:var(--ink)}
+button.primary,.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+button.primary:hover,.btn.primary:hover{background:var(--accent-dark);border-color:var(--accent-dark);color:#fff}
+button.sel{background:var(--accent-soft);border-color:var(--accent);border-width:2px;font-weight:600}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.quiet,.btn.quiet{border-color:var(--line);min-height:44px;font-size:.88rem}
+button.danger{border-color:var(--bad);color:var(--bad)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+label.f{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.92rem;min-width:0}
+label.f span.h{font-weight:400;color:var(--muted)}
+label.f .itl{font-weight:400;color:var(--muted);font-size:.85rem}
+input[type=text],textarea,select{font:inherit;font-size:1.05rem;line-height:1.5;color:var(--ink);background:var(--bg);border:1.5px solid var(--ink);border-radius:var(--r);padding:10px 12px;width:100%}
+input[type=text],select{min-height:48px}
+textarea{min-height:120px;resize:vertical}
+textarea.tall{min-height:190px}
+textarea.short{min-height:84px}
+input[type=checkbox],input[type=radio]{width:22px;height:22px;accent-color:var(--accent);flex:none}
+.chk{display:flex;gap:12px;align-items:center;min-height:46px;padding:4px 0;border-bottom:1px solid var(--line)}
+.chk:last-of-type{border-bottom:none}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button{flex:1 1 160px}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:.78rem;font-weight:600;border:1px solid var(--line);color:var(--muted)}
+.site .pill{white-space:nowrap}
+.pill.school{background:var(--good-soft);color:var(--good);border-color:transparent}
+.pill.home{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.fb{border-radius:var(--r);padding:12px 14px}
+.fb.ok{background:var(--good-soft);color:#0E3F21}
+.fb.no{background:var(--bad-soft);color:#6E150D}
+.fb.mid{background:var(--warn-soft);color:#5B2C06}
+.navfoot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
+
+/* exam bar */
+.exam{display:flex;gap:6px;flex-wrap:wrap}
+.exam div{border:1.5px solid var(--line);border-radius:var(--r);padding:10px 12px;font-size:.9rem;min-width:130px}
+.exam div.proj{border:2px solid var(--accent);background:var(--accent-soft)}
+details{border:1px solid var(--line);border-radius:var(--r);background:var(--bg)}
+details>summary{cursor:pointer;padding:12px 14px;font-weight:600;min-height:46px;list-style-position:inside}
+details>div{padding:0 14px 14px;display:flex;flex-direction:column;gap:8px}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;font-size:.92rem}
+th{background:var(--soft)}
+.tablewrap{overflow-x:auto}
+.lvl{display:grid;grid-template-columns:70px 1fr;gap:6px 12px;font-size:.92rem}
+.lvl b{white-space:nowrap}
+
+/* sites */
+.site{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.site:last-child{border-bottom:none}
+.query{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);border-radius:var(--r);padding:10px 12px;font-size:.92rem;word-break:break-word}
+
+/* fake source page */
+.fake{border:1.5px solid var(--ink);border-radius:var(--r);overflow:hidden;background:#fff}
+.fake .url{background:var(--soft);padding:8px 12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;color:var(--muted);border-bottom:1px solid var(--line)}
+.fake .pg{padding:16px;display:flex;flex-direction:column;gap:10px}
+.fake .site-name{font-weight:700;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.fake h3{font-size:1.25rem;line-height:1.25}
+.fake .by{font-size:.85rem;color:var(--muted)}
+
+/* PPR */
+.pprrow{display:grid;grid-template-columns:130px 1fr 64px;gap:10px;align-items:center}
+.pprrow .cnt{font-variant-numeric:tabular-nums;text-align:right;font-weight:600}
+.pprrow .cnt.over{color:var(--bad)}
+.pprmsg{grid-column:2 / 4;font-size:.85rem;color:var(--warn)}
+@media (max-width:600px){.pprrow{grid-template-columns:1fr 56px}.pprrow>label{grid-column:1 / 3}.pprmsg{grid-column:1 / 3}}
+.clock{font-size:3rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1;text-align:center}
+.clockbox{background:var(--soft);border-radius:var(--r);padding:16px;text-align:center;display:flex;flex-direction:column;gap:6px}
+.clockbox.live{background:var(--bad-soft)}
+.clockbox.live .clock{color:var(--bad)}
+.rec{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.rec:last-child{border-bottom:none}
+.rec audio{height:40px;max-width:100%}
+.rec .t{flex:1 1 180px;font-size:.9rem}
+.scores{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.crit{display:grid;grid-template-columns:minmax(0,5fr) auto minmax(0,6fr);gap:12px;align-items:start;padding:12px 0;border-bottom:1px solid var(--line)}
+.crit:last-child{border-bottom:none}
+.crit .marks{display:flex;flex-direction:column;gap:4px}
+.crit .marks label{display:flex;gap:8px;align-items:center;font-size:.9rem;min-height:44px;white-space:nowrap}
+.crit textarea{min-height:84px}
+@media (max-width:860px){.crit{grid-template-columns:1fr}}
+.steps{display:flex;gap:8px;flex-wrap:wrap}
+.steps div{flex:1 1 90px;text-align:center;padding:10px;border:1.5px solid var(--line);border-radius:var(--r);font-size:.9rem}
+.steps div.now{border:2px solid var(--accent);background:var(--accent-soft);font-weight:700}
+.steps div.done{background:var(--good-soft);border-color:transparent}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 10px;border:1px solid var(--line);border-radius:var(--r);font-size:.88rem}
+.chip.key{border:2px solid var(--accent)}
+.factor{text-align:left;justify-content:flex-start;flex-direction:column;align-items:flex-start;padding:10px 12px;height:100%;gap:2px}
+.factor small{font-weight:400;color:var(--muted);font-size:.8rem}
+.printval{display:none}
+
+@media print{
+  .top,.noprint,button,.btn,#alert,.lock{display:none!important}
+  html{font-size:12pt}
+  main{padding:0;max-width:none}
+  .panel{break-inside:avoid;border-color:#888}
+  .panel.soft{background:none;border:1px solid #888}
+  textarea,input[type=text],select{display:none!important}
+  .printval{display:block;border:1px solid #888;border-radius:4px;padding:8px 10px;min-height:2.6em;white-space:pre-wrap;font-weight:400}
+  .printval.big{min-height:9em}
+  details{border:none} details>summary{display:none}
+  a{color:inherit;text-decoration:none}
+}
+
+/* ===== version 2 ===== */
+h1:focus{outline:none}
+.top{top:env(safe-area-inset-top,0px)}
+.preview{background:var(--warn-soft);color:#5B2C06;padding:10px 16px;font-size:.88rem;text-align:center}
+.status{font-size:.8rem;color:var(--muted);white-space:nowrap;margin-left:auto}
+.status.ok{color:var(--good)}
+.status.bad{color:var(--bad);font-weight:700}
+.modepill{white-space:nowrap}
+.menubtn{display:none}
+.alert{background:var(--bad-soft);color:#6E150D;padding:10px 20px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center;font-size:.92rem;border-bottom:1.5px solid var(--bad)}
+.lock{position:fixed;inset:0;z-index:100;background:rgba(22,32,46,.75);display:flex;align-items:center;justify-content:center;padding:20px}
+.lock .panel{background:var(--bg);max-width:480px}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:var(--r);overflow:hidden}
+.seg button{border:none;border-radius:0;min-height:44px}
+.seg button.sel{background:var(--accent);color:#fff;font-weight:600;border-width:0}
+.credit{margin-top:32px;padding-top:14px;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.printhead,#printonly{display:none}
+.livebar{display:flex;flex-direction:column;gap:10px}
+.qrow{display:flex;gap:10px;align-items:center}
+.qrow .query{flex:1;min-width:0}
+.chk{font-size:.92rem}
+
+/* ----- narrow screens: one "Menu" button instead of ten links ----- */
+@media (max-width:860px){
+  .top-in{flex-wrap:nowrap;gap:8px;padding:6px max(16px,env(safe-area-inset-right,0px)) 6px max(16px,env(safe-area-inset-left,0px))}
+  .brand{overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .status{margin-left:auto}
+  .menubtn{display:inline-flex;min-height:44px;font-weight:600;white-space:nowrap;padding:0 12px}
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--bg);border-bottom:2px solid var(--ink);padding:6px 16px 14px;flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:2px;max-height:calc(100vh - 62px);max-height:calc(100dvh - 62px);overflow-y:auto;box-shadow:0 14px 24px rgba(22,32,46,.2)}
+  .top.open .nav{display:flex}
+  .nav .grp{margin:10px 0 2px;padding:0;border:none;line-height:1.5}
+  .nav .grp:first-child{margin-top:4px}
+  .nav a{min-height:48px;font-size:1rem;padding:0 12px}
+  main{padding:16px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px))}
+  .livebar{position:sticky;top:calc(58px + env(safe-area-inset-top,0px));z-index:10;background:var(--bg);padding:8px 0 10px;box-shadow:0 10px 12px -10px rgba(22,32,46,.45)}
+  .livebar .steps{flex-wrap:nowrap;gap:4px}
+  .livebar .steps div{flex:1 1 0;padding:6px 2px;font-size:.78rem}
+  .crit .marks{flex-direction:row;flex-wrap:wrap;gap:8px}
+  .crit .marks label{border:1.5px solid var(--line);border-radius:var(--r);padding:0 14px;min-height:46px;white-space:normal}
+  .crit .marks label:has(input:checked){border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+}
+@media (max-width:600px){
+  h1{font-size:1.45rem}
+  .modepill{display:none}
+  .head .row.between{gap:4px}
+  .panel{padding:14px}
+  .clock{font-size:2.3rem}
+  .clockbox{padding:10px}
+  .livebar .row{flex-wrap:nowrap}
+  .livebar .row button{flex:1 1 0;min-width:0;white-space:normal;line-height:1.15;padding:4px 8px;font-size:.9rem}
+  body.busy .navfoot{display:none}
+  .navfoot{position:sticky;bottom:0;z-index:9;background:var(--bg);margin:0 -16px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));border-top:2px solid var(--ink);flex-wrap:nowrap}
+  .navfoot>.row{flex:0 0 auto}
+  .navfoot [data-act=print],.navfoot>span{display:none}
+  .navfoot .btn{min-height:48px}
+  .navfoot .btn.primary{flex:1 1 auto;min-width:0;white-space:normal;text-align:center;line-height:1.2;padding:4px 12px}
+  .qrow{flex-wrap:wrap}
+  .qrow .btn,.qrow button{flex:1 1 100%}
+  .site{flex-direction:column;align-items:flex-start;gap:6px}
+  .tabs button{flex:1 1 100%}
+  .rec audio{flex:1 1 100%}
+}
+/* ----- phone: sections of the long pages open and close ----- */
+@media screen and (max-width:700px){
+  .fold>.foldhead{cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:44px;margin:-4px 0;flex-wrap:nowrap}
+  .fold>.foldhead::after{content:"+";font-size:1.6rem;line-height:1;font-weight:400;color:var(--accent);flex:none;width:28px;text-align:center}
+  .fold.open>.foldhead::after{content:"–"}
+  .fold:not(.open)>:not(.foldhead){display:none}
+  .fold:not(.open){padding-top:10px;padding-bottom:10px}
+}
+@media print{
+  .printhead{display:block;border-bottom:1.5px solid #000;padding-bottom:6px;margin-bottom:12px;font-size:10.5pt;line-height:1.6}
+  body[data-print=only] #app{display:none!important}
+  body[data-print=only] #printonly{display:flex}
+  button.factor.sel{display:flex!important;border:1.5px solid #000;background:none;color:#000}
+  .livebar{position:static;box-shadow:none}
+  .credit{font-size:8pt;margin-top:16px}
+  .seg{display:none}
+}
+.exbar{background:#FFE9A8;color:#4A3300;padding:10px 20px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center;font-size:.92rem;border-bottom:1.5px solid #C99A00}
+.exbar[hidden]{display:none}
+body.example [data-act=pick],body.example [data-act=cardfx],body.example [data-act=cardadd],body.example [data-act=carddel],body.example [data-act=goaladd],body.example [data-act=goaldel],body.example [data-act=erase],body.example [data-act=backup],body.example [data-act=restoreyes],body.example label[for=restore],body.example [data-act=printcards]{display:none!important}
+.exrow td,.exrow th{vertical-align:top}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">WL AP Research</div>
+    <span class="pill modepill" id="modepill" hidden></span>
+    <nav class="nav" id="nav" aria-label="Screens"></nav>
+    <span class="status" id="savest" role="status" aria-live="polite"></span>
+    <button class="menubtn" id="menubtn" data-act="menu" aria-expanded="false" aria-controls="nav">Menu</button>
+  </div>
+</header>
+<div id="alert"></div>
+<div id="exbar" class="exbar noprint" role="note" hidden><span><b>WORKED EXAMPLE.</b> A finished project in English: 1990s hip-hop in New York and New Jersey. It shows where each piece of information goes. Read-only: nothing here is yours or saved. Choose a different community for your own project.</span><button data-act="mode" data-a="back">Back to my project</button></div>
+<main>
+  <div class="printhead" id="printhead"></div>
+  <div id="app"></div>
+  <div id="printonly"></div>
+  <footer class="credit" data-author="Assunta Scotto" data-created="2026-11">
+    <div><b>WL AP Research</b> · &copy; 2026 Assunta Scotto. All rights reserved. Created by Assunta Scotto, November 2026.</div>
+    <div>The feedback-form criteria, the research-plan and source-card headings and the sample SMART goal come from College Board's AP World Language and Culture Course Project classroom resources (&copy; 2026 College Board) and are used here for classroom practice.</div>
+    <div>AP&reg; is a trademark registered by the College Board, which is not affiliated with, and does not endorse, this app.</div>
+  </footer>
+</main>
+<noscript><p style="padding:20px">WL AP Research needs JavaScript. Created by Assunta Scotto, &copy; 2026.</p></noscript>
+<script>
+"use strict";
+/* =====================================================================
+   WL AP RESEARCH
+   Created by Assunta Scotto. Copyright (c) 2026 Assunta Scotto. All rights reserved.
+   First built November 2026 for AP World Language and Culture classes. Language-neutral: the student chooses the language in the app.
+   This notice stays with every copy of this file.
+   =====================================================================
+   YEAR PACK: the ONLY part that changes from one year to the next.
+
+   EVERY NEW SCHOOL YEAR: replace this whole block (from "const PACK" to
+   "END OF YEAR PACK") with the new year's block. Give it a new id.
+   Students' saved work is stored per id, so a new id starts clean.
+
+   IN JANUARY, when College Board releases the real packet: fill in "real"
+   (same shape as "practice": title, prompt, factors, reflection, and a
+   qbank if you have one). Students then get a Practice / Real switch, and
+   each side keeps its own plan, source cards, PPR and recordings.
+
+   siteLabels: "school" (opens at school) | "home" (home only) | "untested"
+   ===================================================================== */
+const PACK = {
+  id: "2027-wl-music",
+  themeName: "Music",
+  themeEn: "music",
+  dates: { packet: "January 2027", pprDue: "April 30, 2027", pprDueTime: "11:59 PM ET", exam: "May 2027 (College Board sets the day for each language)" },
+  pprBoxWords: 10,
+  siteLabels: { wikipedia: "untested", unesco: "untested", youtube: "untested", worldbank: "untested", uis: "untested", loc: "untested" },
+  themeSites: [],
+  practice: {
+    title: "Music and the identity of a community",
+    prompt: {
+      it: "",
+      en: "Imagine that your school is planning a cultural festival. The committee wants to include the music of a community or region where the language you are studying is spoken. Choose a community and research its music in depth. Prepare a presentation for the committee and explain why that music deserves a place in the festival. Include at least three of the factors below, and explain them with specific information from your research. Your presentation may not be longer than three minutes."
+    },
+    factors: [
+      { id: 1, group: "pp", name: "Instruments, songs and genres", ex: "Traditional instruments; musical styles; songs in a local language or dialect" },
+      { id: 2, group: "pp", name: "Places and events", ex: "Festivals; public squares; concerts; radio and television" },
+      { id: 3, group: "pp", name: "How the music is passed on", ex: "Family; music schools; bands and groups; recordings and archives" },
+      { id: 4, group: "pp", name: "Music in daily life", ex: "Work; religious or seasonal celebrations; tourism" },
+      { id: 5, group: "persp", name: "Music and identity", ex: "Pride of place; language and dialect; roots" },
+      { id: 6, group: "persp", name: "Tradition and innovation", ex: "Purists and experimenters; new artists; young audiences" }
+    ],
+    reflection: [
+      "Why do you think music is important for the identity of a community?",
+      "If you could present the music of one community where the language you study is spoken, which would you choose? Why?",
+      "What differences or similarities have you noticed between the role of music there and in your own community?",
+      "Reflect on the cultural products, practices and perspectives that appear in the sources. How are they similar to or different from those of your community?"
+    ],
+    /* English practice questions. None names a community, a genre or an artist.
+       The teacher says each one aloud in the target language (or types the real wording into the teacher box). */
+    qbank: {
+      pref: [
+        "Of the sources you used, which did you prefer, and why?",
+        "Which part of this community's music do you like best? Why?",
+        "If you could attend only one live music event in this community, which would you choose, and why?",
+        "Do you prefer this community's traditional music or its more modern forms? Explain your choice.",
+        "If you could keep researching, which part of the topic would you explore further?"
+      ],
+      opin: [
+        "In your opinion, why is music so important to this community's identity?",
+        "Do you think young people in this community still care about traditional music? What is your opinion based on?",
+        "Is mixing tradition with modern music a good thing or a risk? Why?",
+        "Which of your sources was the most reliable? How did you decide?",
+        "Does tourism help or harm this community's music? Explain why."
+      ],
+      cons: [
+        "What would you advise someone who wants to discover this community's music for the first time?",
+        "What advice would you give a classmate who has to do research like yours?",
+        "What should this community do to pass its music on to younger people?",
+        "The committee wants to invite musicians to the festival. What kind of group would you advise them to look for?",
+        "How would you recommend presenting this music to an audience that does not speak the language?"
+      ],
+      info: [
+        "Can you explain more about how you found and chose your sources?",
+        "Can you describe an instrument, a song or a style that is typical of this community?",
+        "Where, or on what occasions, is this music usually heard?",
+        "How do people learn this music in the community you chose?",
+        "What was the biggest difficulty during your research, and how did you solve it?"
+      ],
+      emoz: [
+        "How did you feel the first time you heard this music?",
+        "Was there a piece of information that surprised you during your research? What was it, and why?",
+        "Which part of the project gave you the most satisfaction?",
+        "How did you feel when a source was hard to understand?",
+        "What moved you most in this project?"
+      ],
+      prev: [
+        "How do you think this community's music will change over the next twenty years?",
+        "Do you think young people will still sing these songs in fifty years? Why?",
+        "What effect will new technology have on the way this music is passed on?",
+        "If this music were included in your school's festival, how do you think the audience would react?",
+        "What would happen to this community if its traditional music disappeared?"
+      ],
+      conf: [
+        "What similarities or differences have you noticed between the role of music in this community and in yours?",
+        "Is there a music event in your own community that is similar to the ones you studied? How is it different?",
+        "How do people learn music in your community, compared with the community you studied?",
+        "Do young people in your community listen to music the same way as young people in the community you chose? Explain.",
+        "Compare the importance of the local language or dialect in the music of the two communities."
+      ],
+      rifl: [
+        "What does this music reveal about the values of the community you chose?",
+        "Choose one musical practice you studied: what idea or value of the community does it show?",
+        "Why do you think this community considers it important to preserve its music?",
+        "How does an instrument or a song you studied reflect the community's history or beliefs?",
+        "What is the link between the way this music is passed on and what the community thinks about family or tradition?"
+      ]
+    },
+    /* No packet is built in: sources differ by language and the real ones come from College Board. */
+    packet: [],
+    packetNote: `<b>No practice sources are built in.</b> Sources differ by language, and the real ones come from College Board in ${"January 2027"}. Use the prompt, the six factors and the four reflection questions below to practise the steps with sources you or your teacher choose.`,
+    facts: ``
+  },
+  real: null
+};
+/* ========================= END OF YEAR PACK ========================= */
+
+const ROUTES = [
+  { id: "start", grp: "Skills", nav: "Start", title: "The exam and the rubric" },
+  { id: "trep", grp: "Skills", nav: "1 Three P's", title: "The three P's" },
+  { id: "dove", grp: "Skills", nav: "2 Where to look", title: "Where to look" },
+  { id: "fidarsi", grp: "Skills", nav: "3 Trust it?", title: "Can I trust it?" },
+  { id: "scheda", grp: "Skills", nav: "4 Source card", title: "Source card and citing" },
+  { id: "piano", grp: "My project", nav: "Research plan", title: "Research plan" },
+  { id: "ppr", grp: "My project", nav: "PPR", title: "PPR and presentation" },
+  { id: "qa", grp: "My project", nav: "Q&amp;A", title: "Q&A simulator" },
+  { id: "pacchetto", grp: "More", nav: "Packet", title: "Practice packet" },
+  { id: "lavoro", grp: "More", nav: "Save &amp; print", title: "Save and print my work" }
+];
+
+const RUBRIC_PRES = [
+  { key: "task", name: "Task", max: 2, tag: "three factors explained with details", research: true, lv: [
+    "Does not address the prompt, only restates it, or lists factors with no explanation.",
+    "Three or more factors with little or no detail, OR one or two factors explained with detail. Relies on personal stories or general knowledge.",
+    "Explains three or more factors with relevant details: specific examples and information from research." ] },
+  { key: "culture", name: "Culture", max: 2, tag: "product or practice → perspective", research: true, lv: [
+    "Little or no relevant cultural example, or the cultural information is clearly wrong.",
+    "Relevant examples of products, practices or perspectives, but not specific, or with no link between a perspective and a product or practice.",
+    "Specific examples that show how products or practices reflect perspectives (values, beliefs, attitudes)." ],
+    ex: { one: "“In my community many people buy bread fresh every morning.”", two: "“In my community many people buy bread fresh every morning and chat with the baker: this habit shows that daily food is also a moment to connect with the neighbours.”" } },
+  { key: "org", name: "Organization", max: 2, tag: "introduction, connectors, conclusion", research: true, lv: [
+    "No clear organization; hard to follow.",
+    "Some ideas connect, but the order is not always logical. May lack an introduction or conclusion. Few connectors, or the same ones repeated.",
+    "Logical order from start to finish, with an introduction and a conclusion and a variety of connectors used naturally." ] },
+  { key: "lang", name: "Language", max: 3, tag: "varied and accurate", research: false, lv: [
+    "Errors make it impossible or nearly impossible to understand; single words or phrases.",
+    "Vocabulary too limited for the topic; a few basic structures; errors get in the way.",
+    "A range of vocabulary and basic structures; errors occasionally get in the way.",
+    "Wide variety of vocabulary, culturally relevant expressions and varied grammar; errors do not get in the way." ] },
+  { key: "delivery", name: "Delivery", max: 2, tag: "not read, not recited from memory", research: false, lv: [
+    "Pronunciation or intonation blocks understanding; monotone; sounds read or recited; frequent fillers.",
+    "Pace and intonation somewhat engaging; hesitant or choppy at times; generally clear pronunciation.",
+    "Pace and intonation that engage the listener; smooth and confident, little hesitation; clear pronunciation." ] }
+];
+const RUBRIC_QA = [
+  { key: "task", name: "Task", max: 2, tag: "answer at least 3 of the 4 questions well", research: true, lv: [
+    "Barely addresses the questions, is irrelevant, or only repeats them.",
+    "Keeps the exchange going, but only one or two answers are appropriate.",
+    "Appropriate answers with the requested information for at least three of the four questions. Minor misunderstandings are fine." ] },
+  { key: "culture", name: "Culture", max: 2, tag: "one comparison or one reflection", research: true, lv: [
+    "Little or no description of products, practices or perspectives in any answer.",
+    "In at least one answer, describes products, practices or perspectives, without explaining.",
+    "In at least one answer, with details and examples: compares with your own or another community, OR reflects on how perspectives relate to products or practices." ] },
+  { key: "lang", name: "Language", max: 3, tag: "varied and accurate", research: false, lv: [
+    "Errors make it impossible or very hard to understand.",
+    "Vocabulary too limited to keep the exchange going; errors get in the way.",
+    "A range of vocabulary and basic structures; errors occasionally get in the way.",
+    "Wide variety of vocabulary and structures; errors do not get in the way; uses strategies such as paraphrasing." ] },
+  { key: "fluency", name: "Fluency", max: 2, tag: "flows naturally", research: false, lv: [
+    "Pronunciation or intonation blocks understanding; frequent fillers or false starts.",
+    "Pace and intonation somewhat effective; disconnected at times; generally clear pronunciation.",
+    "Speech is fluid and automatic; clear pronunciation; natural pauses are fine." ] }
+];
+
+/* College Board practice feedback forms: criteria paraphrased in English (see the official forms for the exact wording) */
+const CRIT_PRES = [
+  ["Completion of the task", "Answers the whole prompt"],
+  ["Completion of the task", "Explains at least three factors"],
+  ["Completion of the task", "Gives relevant details (for example, researched information, examples)"],
+  ["Cultural understanding", "Gives specific examples of cultural products and/or practices that come from the project research"],
+  ["Cultural understanding", "Shows how cultural perspectives relate to cultural products and/or practices"],
+  ["Organization", "Organizes the presentation logically (for example, connected ideas, an introduction and a conclusion)"],
+  ["Organization", "Uses linking words and phrases to organize and connect ideas"],
+  ["Language control", "Uses varied vocabulary and culturally relevant expressions to get ideas across clearly"],
+  ["Language control", "Controls a variety of grammatical structures (for example, both simple and complex sentences)"],
+  ["Language control", "Presents the work clearly, and any errors do not get in the way of understanding"],
+  ["Delivery", "Speaks clearly and confidently at a suitable pace (little hesitation, few pauses or fillers)"],
+  ["Delivery", "Pronounces clearly and uses effective intonation"]
+];
+const CRIT_QA = [
+  ["Completion of the task", "Answers at least three of the questions with the information asked for"],
+  ["Cultural understanding", "In at least one answer, makes a cultural comparison or reflects on how cultural perspectives relate to products and/or practices"],
+  ["Language control", "Uses varied vocabulary and idiomatic expressions to get ideas across fully"],
+  ["Language control", "Controls a variety of grammatical structures (for example, both simple and complex sentences)"],
+  ["Language control", "Answers clearly, and any errors do not get in the way of understanding"],
+  ["Fluency", "Speaks at a pace that suits a conversation (neither too fast nor too slow, few pauses or fillers)"],
+  ["Fluency", "Pronounces clearly and uses effective intonation"]
+];
+const CRIT_RIFL = [
+  ["", "Answers all four questions logically and in detail"],
+  ["", "Brings in information from at least three of the sources provided"],
+  ["", "Connects cultural knowledge or experience to the topic and/or the reflection questions"],
+  ["", "Presents ideas in a logical, organized order"],
+  ["", "Uses varied vocabulary and suitable grammar accurately"]
+];
+
+/* Three P's sorting cards: everyday life, not music on purpose, and not tied to one language */
+const CARDS = [
+  { t: "a school uniform", a: "prodotto", why: "An object people make and use: a product." },
+  { t: "a nativity scene or other seasonal decoration", a: "prodotto", why: "A thing that is made and displayed: a product. Setting it up every year would be the practice." },
+  { t: "a country's constitution", a: "prodotto", why: "A written text is a product, even though you cannot hold its ideas. The values that inspired it are the perspectives." },
+  { t: "the evening news broadcast", a: "prodotto", why: "A TV programme is something a culture makes: a product. Watching it together at dinner would be a practice." },
+  { t: "taking a walk through the town centre on Sunday afternoon", a: "pratica", why: "Something people do, at a set time and place: a practice." },
+  { t: "having Sunday lunch at the grandparents' house", a: "pratica", why: "A habit people repeat: a practice. Why they keep doing it is the perspective." },
+  { t: "using a formal way of saying “you” to someone you do not know", a: "pratica", why: "A way of behaving with others: a practice. The idea of respect behind it is the perspective." },
+  { t: "bringing a small gift when invited to dinner", a: "pratica", why: "An action, so a practice. The belief that a guest should not arrive empty-handed is the perspective." },
+  { t: "the idea that a meal is a time to be together, not only to eat", a: "prospettiva", why: "An idea about what matters. You cannot see it; you work it out from what people do. That is a perspective." },
+  { t: "the importance of making a good impression out of respect for others", a: "prospettiva", why: "A value that explains many products and practices: a perspective." },
+  { t: "attachment to one's own village or neighbourhood", a: "prospettiva", why: "An attitude people share: a perspective. A local festival would be a practice that shows it." },
+  { t: "the belief that older people deserve special respect", a: "prospettiva", why: "A belief: a perspective. Giving up your seat or using a formal “you” are practices that show it." }
+];
+const PLABEL = { prodotto: "Product", pratica: "Practice", prospettiva: "Perspective" };
+const YESNO = [
+  { t: "Taking a walk through the town centre on Sunday afternoon", persp: false, why: "It is an action, so it is a practice. The perspective would be why people do it, for example the value given to seeing and greeting other people." },
+  { t: "Believing that a meal should be shared", persp: true, why: "It is a belief. Nobody can photograph it. That is what a perspective is." },
+  { t: "Going to a religious service on a holiday night", persp: false, why: "Even though it involves religion, going is an action: a practice. The faith or the sense of tradition behind it is the perspective." },
+  { t: "The rules of a volunteer association", persp: false, why: "A written document is a product. The values that inspired it, such as solidarity, are the perspectives." },
+  { t: "Respect for people who are older", persp: true, why: "A value people hold: a perspective. Practices such as a formal “you” make it visible." },
+  { t: "Greeting everyone when you walk into a shop", persp: false, why: "An action: a practice. The idea of politeness behind it is the perspective." }
+];
+
+/* Source types that work in any language. Real, multilingual, and none of them is a topic or a source handed to the student. */
+const SITES = {
+  read: [
+    { k: "wikipedia", name: "Wikipedia, in your target language", url: "https://www.wikipedia.org/", d: "A map, not a source. Choose your language edition, read the page, then use its footnotes to find the real sources." },
+    { k: "unesco", name: "UNESCO · Intangible Cultural Heritage", url: "https://ich.unesco.org/en/lists", d: "Traditions of many countries, written up with their communities. Switch the page language to see it in French or Spanish." },
+    { k: "loc", name: "National libraries and archives", url: "https://www.google.com/search?q=national+library+digital+collections", d: "Most countries have one with free digital collections. Search for the library of the country you study, in its own language." }
+  ],
+  listen: [
+    { k: "youtube", name: "YouTube: channels of public institutions", url: "https://www.youtube.com/", d: "Search for the official channels of public television and radio, newspapers, museums, theatres and universities of the country you study. You choose the videos. Check who owns the channel before you trust it." }
+  ],
+  data: [
+    { k: "uis", name: "UNESCO Institute for Statistics", url: "https://uis.unesco.org/", d: "International figures on culture, education and communication." },
+    { k: "worldbank", name: "World Bank Open Data", url: "https://data.worldbank.org/", d: "Population, internet use and other figures, country by country. For local figures, look for the country's own statistics office in your target language." }
+  ]
+};
+const SITE_LABEL = { school: "Works at school", home: "Home only", untested: "School: not tested" };
+
+/* Six invented pages for the trust exercise (English, none about music, none real). */
+const FAKES = [
+  { url: "www.greenfield-council.example/environment/recycling-results-2025", site: "Greenfield Council · Environment Office",
+    title: "Recycling: the 2025 results", by: "Environment Office · published January 14, 2026",
+    body: ["In 2025 Greenfield Council recycled 71% of its household waste, up from 64% the year before. The figures come from the monthly records of the company that runs the service and are available at the bottom of this page.", "The biggest improvement is in food waste, after new bins were delivered to every household in March. For information: environment.office@greenfield-council.example."],
+    ok: ["use"], why: "A public office reporting its own figures, with a date, a named department, a contact and the data behind the numbers. Use it. It can still present its own work kindly, so a second source never hurts.",
+    say: "“This source is reliable because it is published by a public body and says where the data comes from.”" },
+  { url: "www.valleyherald.example/news/commuter-trains", site: "The Valley Herald · News",
+    title: "Commuters: one train in five is late", by: "by Marta Ferris · October 3, 2026",
+    body: ["According to the regional transport observatory's annual report, 19% of regional trains arrived more than five minutes late in the first six months of the year.", "“I leave at 6:40 and never know when I will get to the office,” says Paul Gates, an office worker who has used the same line for twelve years. The rail company replies that work on the line will finish by spring."],
+    ok: ["use"], why: "A named journalist, a recent date, a named report, a quoted person and the other side's reply. Use it.",
+    say: "“This source is reliable because it quotes a report, includes testimony and has a recent date.”" },
+  { url: "www.lukeskitchen.example/blog/real-carbonara", site: "Luke's Kitchen · my blog",
+    title: "The real carbonara: everyone is wrong except me", by: "Luke · no date",
+    body: ["I have been saying it for years: anyone who puts cream in carbonara has understood nothing. Nobody there does it that way, and whoever does is not a real local.", "The original recipe is only one and it is mine. You do not need books or studies: just ask my grandmother. Tell me in the comments if you agree!"],
+    ok: ["care", "drop"], why: "One person's opinion, no date, no evidence, and big generalizations (“nobody”, “a real local”). It can show that people feel strongly about the topic, but it proves no fact. Use with care or drop it.",
+    say: "“This source is not very reliable because it only gives the author's opinion and shows no evidence.”" },
+  { url: "www.saintrocco-oil.example/why-our-oil", site: "Saint Rocco Olive Mill · Online shop",
+    title: "Why our oil is the best in the country", by: "Saint Rocco Olive Mill · offer valid until Sunday",
+    body: ["For four generations we have made the tastiest and healthiest oil in the country. All the experts agree: once you try it, you never go back.", "Order three bottles today and get the fourth free. Free delivery across Europe!"],
+    ok: ["drop", "care"], why: "It exists to sell. “The best” and “all the experts” have no names and no data. Drop it as a source of facts. At most it shows how a company presents tradition to customers.",
+    say: "“This source is not very reliable because it is an advertisement: it wants to sell, not to inform.”" },
+  { url: "www.newstoday.example/2009/young-people-and-the-internet", site: "News Today · Technology",
+    title: "Young people and the internet: only one in three has a social profile", by: "Editorial staff · May 22, 2009",
+    body: ["A survey of one thousand high-school students shows that only 34% have a profile on a social network. Most use the internet mainly for email and for schoolwork research.", "According to the authors of the survey, the mobile phone is still used almost only for calls and text messages."],
+    ok: ["care", "drop"], why: "It has data and may have been accurate, but it is from 2009. For how young people live today it is useless. It is only good for showing how things have changed. Use with care or drop it.",
+    say: "“This source should be used with care because the data is from 2009 and the situation has changed.”" },
+  { url: "www.visit-beautiful-city.example/en/welcome", site: "Visit Beautiful City · Guide",
+    title: "Welcome in our so beautiful city!", by: "no author · no date",
+    body: ["You can to visit many excited attractions in this city. The local persons are much friendly and love the tourists. The food is delicious and you will love it surely.", "Book now your trip of dream and make memories that last for always!"],
+    ok: ["drop"], why: "This is not natural writing. It reads like a word-for-word machine translation (“you can to visit”, “trip of dream”, “make memories that last for always”). No author, no date, and it sells trips. Drop it. In your target language, the same warning sign is language that no native speaker would write.",
+    say: "“This source is not reliable because it has no author and seems to have been translated by a machine.”" }
+];
+const TRUSTQ = [
+  "Who is behind it? Open a new tab and search their name.",
+  "When? Is it still current?",
+  "Why does it exist? To inform, sell, or persuade?",
+  "Where is the evidence? Data, names, quotes?",
+  "Is it natural writing, the way speakers of {LN} would write it?"
+];
+
+const QTYPES = {
+  pref: "express a preference", opin: "give or justify an opinion", cons: "give advice",
+  info: "explain or give information", emoz: "express feelings", prev: "make predictions",
+  conf: "compare with your own community", rifl: "reflect on perspectives and products or practices"
+};
+const QTYPE_EN = { teacher: "teacher's question", pref: "preference", opin: "opinion", cons: "advice", info: "information", emoz: "emotion", prev: "prediction", conf: "comparison", rifl: "reflection" };
+const PPR_BOXES = [
+  ["title", "Title"], ["intro", "Introduction"], ["m1", "Main idea 1"], ["m2", "Main idea 2"],
+  ["m3", "Main idea 3"], ["m4", "Main idea 4"], ["concl", "Conclusion"]
+];
+const PPR_LIMIT = PACK.pprBoxWords;
+
+const RUBRIC_SRC = `Rubric wording on this page is shortened for practice. It is based on the scoring guidelines in the AP World Language and Culture Course and Exam Description for your language, published by College Board on AP Central, and on a teacher-workshop summary. The official scoring guidelines are the ones in that document.`;
+
+const EXAMPLE = {"title": "Worked example: 1990s hip-hop in New York and New Jersey", "prompt": {"it": "", "en": "Imagine that your school is planning a culture festival. The committee wants to include the music of an English-speaking community or region. Choose a community and research its music. Prepare a presentation for the committee and explain why that music deserves a place in the festival. Include at least three of the factors below, and explain them with information from your sources. Your presentation may not be longer than three minutes."}, "factors": [{"id": 1, "group": "pp", "name": "Instruments, songs and genres", "ex": "Albums; the sound; samples"}, {"id": 2, "group": "pp", "name": "Places and events", "ex": "Clubs; concerts; award shows"}, {"id": 3, "group": "pp", "name": "How the music is passed on", "ex": "Radio; tapes; older artists teaching younger ones"}, {"id": 4, "group": "pp", "name": "Music in daily life", "ex": "Work; fashion; language"}, {"id": 5, "group": "persp", "name": "Music and identity", "ex": "Pride of place; neighborhood names"}, {"id": 6, "group": "persp", "name": "Tradition and innovation", "ex": "Rivalry between regions; new sounds; the music today"}], "reflection": ["Why do you think music is important for the identity of a community?", "If you could present the music of an English-speaking community, which one would you choose? Why?", "What differences or similarities have you noticed between the role of music there and in your own community?", "Reflect on the cultural products, practices and perspectives in the sources. How are they similar to or different from those of your community?"], "work": {"f": {"p.topic": "1990s hip-hop for our festival", "p.community": "New York City and northern New Jersey", "p.rel.f1": "Songs and genres.", "p.info.f1": "I need the important albums and how the East Coast sound was different", "p.rel.f5": "Music and identity.", "p.info.f5": "I need the artists' own words about their neighborhoods", "p.rel.f6": "Tradition and innovation.", "p.info.f6": "I need facts about the rivalry between the coasts and about hip-hop today", "p.terms": "Nas interview Illmatic; Wu-Tang Clan Staten Island; East Coast West Coast rivalry timeline; hip-hop most popular genre", "p.res": "Radio interviews with transcripts; a news agency; the Library of Congress; a music industry report", "p.people": "The Library of Congress National Recording Registry; the college radio station WKCR", "p.org": "One source card for every source", "g0.goal": "I will find two interviews with artists and note three useful sentences from each", "g0.when": "by Friday", "g1.goal": "I will find one reliable timeline of the rivalry and check its dates in a second source", "g1.when": "by next class", "g2.goal": "I will find one number about hip-hop today, with its source", "g2.when": "by the end of the week", "c0.tipo": "interview", "c0.titolo": "Nas: \"I'm Still Charged\" 20 Years After Illmatic", "c0.autore": "NPR, Microphone Check; interviewers Frannie Kelley and Ali Shaheed Muhammad", "c0.data": "2014", "c0.link": "NPR, Microphone Check (npr.org)", "c0.riassunto": "Nas explains that his neighborhood gave him the material for his first album. He began recording at about 17 and the album came out when he was 20", "c0.parole": "surroundings; Queens; respect; MC", "c0.domanda": "Why did you say the names of real streets and buildings in your songs?", "c0.prodotti": "The album Illmatic; describing your own neighborhood in your songs", "c0.prospettive": "Your place gives you your story, and you owe it something back", "c0.fattori": "Factor 1: the album Illmatic. Factor 5: describing your own neighborhood in your songs.", "c0.confronto": "Singers from my town do not usually name our streets", "ppr.title": "1990s hip-hop, New York and New Jersey: place, pride, legacy", "ppr.intro": "Committee; festival; three factors: sound, identity, legacy", "ppr.m1": "Sound: Wu-Tang 1993, Illmatic 1994; raw samples; RZA, DJ", "ppr.m2": "Identity: Nas, \"my surroundings\"; Queensbridge; Shaolin; Newark, Queen Latifah", "ppr.m3": "Rivalry: 1995 Source Awards; Tupac 1996; Biggie 1997; Ice Cube", "ppr.m4": "Today: largest U.S. genre, 2017; 30% of streams; the South", "ppr.concl": "Pride of place: power, danger; comparison, my town", "r0": "I think music is important for the identity of a community because it tells the story of a place in the words of the people who live there. In an interview on NPR, the rapper Nas says about his first album: \"My surroundings wrote that album. I made it for them.\" If I could choose a community, I would choose New York and New Jersey in the 1990s, because many famous artists came from a small number of neighborhoods. In my town music is different. We listen to songs from everywhere on our phones, and they do not talk about our streets. But there is one similarity. In a television report, a rapper from New Jersey says her state is like \"the little step-brother to New York.\" My town is also near a bigger city, and I know this feeling. In the sources I see a product, the album; a practice, saying the name of your neighborhood; and a perspective, that the place you come from is part of who you are. An article from the Associated Press shows the danger too: when the pride of two coasts became a fight, two artists died.", "r1": "(Answered in the paragraph under question 1. She writes one connected reflection, not four separate answers.)", "r2": "(See the paragraph under question 1.)", "r3": "(See the paragraph under question 1.)", "aq1": "Do you think the rivalry between the two coasts was good or bad for the music?", "aq2": "How is this different from music in your own community?", "aq3": "Which source was the most useful, and which did you trust least?", "aq4": "How did new artists reach listeners before they had a record contract?", "ps.task": "2", "ps.culture": "2", "ps.org": "2", "ps.lang": "2", "ps.delivery": "1", "qs.task": "2", "qs.culture": "2", "qs.lang": "2", "qs.fluency": "1", "c0.fx": [1, 5]}, "nCards": 1, "cur": 0, "nGoals": 3, "pick": [1, 5, 6], "used": [], "lastQA": []}, "presentation": ["Good morning to the members of the committee. I want to propose the hip-hop of New York and New Jersey in the 1990s for our festival. To explain why, I will talk about three factors: the songs and the sound, music and identity, and tradition and innovation.", "First, the sound. In 1993 the Wu-Tang Clan, nine rappers from Staten Island, made their first album. One year later Nas, from the Queensbridge housing projects, made Illmatic. The East Coast sound was raw and used many samples from old records. In an interview on NPR, the producer RZA says, \"my musical knowledge really came from being a DJ.\" At that time the West Coast had a smoother sound, so people could hear where a record came from.", "Second, music and identity. These artists always said the name of their place. In another NPR interview, Nas says about his album: \"My surroundings wrote that album. I made it for them.\" The Wu-Tang Clan called Staten Island \"Shaolin.\" In Newark, New Jersey, Queen Latifah practiced with her friends, and she calls this group \"a school for rap.\" This shows a value of the community: the place you come from is part of who you are, and you must represent it well.", "Third, tradition and innovation. Pride of place also had a dark side. According to the Associated Press, a conflict started between two record companies, Bad Boy in New York and Death Row in Los Angeles. At the Source Awards in New York in 1995, the crowd booed the artists from the West. Then Tupac Shakur was shot in Las Vegas in September 1996, and the Notorious B.I.G. was killed in Los Angeles in March 1997. Years later Ice Cube said in a television interview, \"Tupac wasn't killed by Biggie, and Biggie wasn't killed by Tupac.\" He says the artists met and decided to end the fight. But the idea of representing your home did not end. At the same award show, a rapper from the South said, \"The South got something to say!\" According to Nielsen, in 2017 hip-hop and R&B became the biggest kind of music in the United States for the first time.", "To finish, this music deserves a place in our festival because it shows the power and the danger of pride in your home. In my town we are proud too, but we do not often put the name of our town in a song. Thank you."], "qa": [{"q": "Do you think the rivalry between the two coasts was good or bad for the music?", "kind": "asks for an opinion, factor 6", "a": "I think it was both. At the beginning it was a competition, and I think competition can make artists work harder. But it became personal, and according to the Associated Press two artists were killed. Ice Cube says that \"side people\" made the fight bigger. So for me competition is good only when it stays in the music."}, {"q": "How is this different from music in your own community?", "kind": "asks for a comparison", "a": "In my town we have traditional songs for festivals, and the old people know them best. In New York in the 1990s the music was new and young people made it. But one thing is the same. In both places the songs are about the place. For me this shows the same value: people want others to know where they come from."}, {"q": "Which source was the most useful, and which did you trust least?", "kind": "asks about her research", "a": "The most useful sources were the radio interviews, because the artists explain their own music. I trusted least a website that reported a television interview with Ice Cube, because I did not see the interview myself. I used his words, but I say where I found them."}, {"q": "How did new artists reach listeners before they had a record contract?", "kind": "factor 3, which she did not choose", "a": "This is a factor I did not choose, but I found some information. Two DJs, Stretch Armstrong and Bobbito Garcia, had a radio show at a college station from 1990 to 1998, from one to five in the morning. They say that about 300 artists without a contract came on the show. If I had more time, I would research how listeners shared recordings of it."}], "sources": [["Nas on NPR's Microphone Check, 2014", "Interview", "\"My surroundings wrote that album. I made it for them.\" He was 20 when Illmatic came out in April 1994", "High: his own words"], ["RZA of the Wu-Tang Clan on NPR's Fresh Air, recorded 2005", "Interview", "\"My musical knowledge really came from being a DJ.\" He gave himself a five-year plan in 1992", "High"], ["Queen Latifah on NPR's Fresh Air, recorded 1999", "Interview", "She grew up in Newark and practiced with her crew, which she calls \"a school for rap\"", "High"], ["Stretch Armstrong and Bobbito Garcia on NPR, 2017", "Interview", "Their radio show ran on WKCR from 1990 to 1998, 1 to 5 a.m.; about 300 unsigned artists came on", "High for their own show"], ["Ice Cube and Snoop Dogg on \"Untold Stories of Hip Hop\", reported by HotNewHipHop", "Interview, second-hand", "\"Tupac wasn't killed by Biggie, and Biggie wasn't killed by Tupac.\" The artists met and agreed to end the feud", "Medium: a website's report of a TV interview"], ["Inside the East vs. West rap rivalry, Associated Press, October 12, 2023", "News article", "Bad Boy Records in New York, Death Row Records in Los Angeles; Tupac Shakur shot in Las Vegas on September 7, 1996, died six days later; the Notorious B.I.G. killed in Los Angeles on March 9, 1997", "High"], ["How the 1995 Source Awards changed rap forever, Complex, 2015", "Article", "The New York crowd booed West Coast artists; Andre 3000 of OutKast answered, \"The South got something to say!\"", "Medium: a magazine's argument"], ["Enter the Wu-Tang turns 25, Document Journal, 2018", "Article", "1993 album; nine members from Staten Island, which they called Shaolin; raw sound with many samples; the West Coast sound was smoother", "Medium: no author named"], ["Illmatic joins the National Recording Registry, Legacy Recordings, 2021", "Article", "The Library of Congress added Illmatic to its registry in 2021", "Medium: the record company's own page"], ["Lauryn Hill wins five Grammys, XXL", "Article", "February 24, 1999: first hip-hop artist to win Album of the Year; she is from South Orange, New Jersey", "High"], ["New Jersey's hip-hop roots, FOX 5 NY, 2023", "TV news report", "A New Jersey rapper calls the state \"the little step-brother to New York\"", "High for the quote"], ["Nielsen Music 2017 year-end report, as reported by Hypebot, January 4, 2018", "Data", "In 2017 R&B and hip-hop became the largest genre in the United States for the first time: 30% of audio streams, against 17% for rock", "High for the figures"]], "scores": [["Presentation", "Task execution", "2 of 2", "Three factors, each explained with a date, a number or a named person from research"], ["Presentation", "Cultural understanding", "2 of 2", "She says what naming a place shows about the community's values"], ["Presentation", "Organization", "2 of 2", "The opening names three factors; first, second, third, to finish; a conclusion"], ["Presentation", "Language control", "2 of 3", "Clear and correct, but mostly simple sentences and common words"], ["Presentation", "Delivery", "1 of 2", "Cannot be scored from text; some hesitation is normal"], ["Q&A", "Task execution", "2 of 2", "All four answers give what was asked"], ["Q&A", "Cultural understanding", "2 of 2", "Answer 2 compares with her own community; one such answer is enough"], ["Q&A", "Language control", "2 of 3", "Same as above"], ["Q&A", "Fluency", "1 of 2", "Cannot be scored from text"]]};
+PACK.example = { title: EXAMPLE.title, prompt: EXAMPLE.prompt, factors: EXAMPLE.factors, reflection: EXAMPLE.reflection, packetNote: "This is a worked example in English. The real packet comes from College Board; the example student found her own sources (see the Source card page).", facts: "" };
+
+/* ============================ helpers ============================ */
+const MADE_BY = "Assunta Scotto", APP_VERSION = "2.1 (2026-11-11)";
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const app = $("#app");
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; };
+const hasReal = () => !!(PACK.real && PACK.real.prompt && Array.isArray(PACK.real.factors) && PACK.real.factors.length);
+
+/* Saved work: one record per year pack. Inside it, the skills pages are shared,
+   and the practice prompt and the real project each keep their own work. */
+const KEY = "wlAP.v1." + PACK.id;
+const blankProj = () => ({ f: {}, nCards: 1, cur: 0, nGoals: 3, pick: [], used: [], lastQA: [] });
+const blankRoot = () => ({ app: "WL AP Research", author: MADE_BY, v: 2, pack: PACK.id, mode: "practice", shared: {}, proj: { practice: blankProj(), real: blankProj() } });
+function fromV1(s) {
+  const r = blankRoot(), p = r.proj.practice, pick = Array.isArray(s.pick) ? s.pick : [];
+  Object.keys(s.f).forEach(k => {
+    const m = k.match(/^p\.(rel|info)(\d)$/);
+    if (/^(trep|dove)\./.test(k)) r.shared[k] = s.f[k];
+    else if (m) { if (pick[+m[2]] != null) p.f["p." + m[1] + ".f" + pick[+m[2]]] = s.f[k]; }
+    else p.f[k] = s.f[k];
+  });
+  p.nCards = s.nCards || 1; p.cur = s.cur || 0; p.nGoals = s.nGoals || 3; p.pick = pick;
+  p.used = Array.isArray(s.used) ? s.used : []; p.lastQA = Array.isArray(s.lastQA) ? s.lastQA : [];
+  return r;
+}
+function normalize(s) {
+  if (!s || typeof s !== "object") return null;
+  if (s.v === 1 && s.f && typeof s.f === "object") return null;
+  if (s.v !== 2 || s.pack !== PACK.id) return null;
+  const r = blankRoot();
+  r.mode = s.mode === "real" ? "real" : "practice"; r.at = s.at;
+  if (s.shared && typeof s.shared === "object") r.shared = s.shared;
+  ["practice", "real"].forEach(m => {
+    const p = s.proj && s.proj[m]; if (!p || typeof p !== "object") return;
+    const q = r.proj[m] = Object.assign(blankProj(), p);
+    if (!q.f || typeof q.f !== "object") q.f = {};
+    ["pick", "used", "lastQA"].forEach(k => { if (!Array.isArray(q[k])) q[k] = []; });
+    q.nCards = Math.max(1, +q.nCards || 1); q.cur = Math.max(0, +q.cur || 0); q.nGoals = Math.min(5, Math.max(3, +q.nGoals || 3));
+  });
+  return r;
+}
+let root = blankRoot(), storageOK = true, locked = false, dirty = false;
+try { localStorage.setItem(KEY + ".test", "1"); localStorage.removeItem(KEY + ".test"); } catch (e) { storageOK = false; }
+try {
+  const raw = localStorage.getItem(KEY);
+  if (raw) root = normalize(JSON.parse(raw)) || blankRoot();
+} catch (e) { }
+if (root.mode === "real" && !hasReal()) root.mode = "practice";
+
+const isExample = () => root.mode === "example";
+const modeLabel = () => isExample() ? "Worked example" : isPractice() ? "Practice prompt" : "Real project";
+function enterExample() { if (!isExample()) ui.prevMode = root.mode; root.proj.example = JSON.parse(JSON.stringify(EXAMPLE.work)); root.mode = "example"; }
+function leaveExample(to) { delete root.proj.example; root.mode = (to === "real" && hasReal()) ? "real" : "practice"; try { history.replaceState(null, "", location.pathname + location.hash); } catch (e) { } }
+const P = () => root.proj[root.mode];                                   /* the work for the prompt in use */
+const PR = () => isExample() ? PACK.example : root.mode === "real" && hasReal() ? PACK.real : PACK.practice; /* the prompt in use */
+const isPractice = () => PR() === PACK.practice;
+const factor = id => PR().factors.find(f => f.id === id);
+const picks = () => P().pick.filter(id => factor(id));
+const QB = () => PR().qbank || PACK.practice.qbank;
+const bag = k => /^(trep|dove|me)\./.test(k) ? root.shared : P().f;
+const LANGS = [["Spanish", "es-ES", "es"], ["French", "fr-FR", "fr"], ["German", "de-DE", "de"], ["Italian", "it-IT", "it"], ["Chinese (Mandarin)", "zh-CN", "zh-CN"], ["Japanese", "ja-JP", "ja"], ["Portuguese", "pt-BR", "pt"]];
+const LSEARCH = { Spanish: ["entrevista", "podcast", "datos", "historia"], French: ["interview", "podcast", "données", "histoire"], German: ["Interview", "Podcast", "Daten", "Geschichte"], Italian: ["intervista", "podcast", "dati", "storia"], "Chinese (Mandarin)": ["采访", "播客", "数据", "历史"], Japanese: ["インタビュー", "ポッドキャスト", "データ", "歴史"], Portuguese: ["entrevista", "podcast", "dados", "história"] };
+const LVOICE = { Spanish: "Buenos días. Esta es la voz del simulador.", French: "Bonjour. Voici la voix du simulateur.", German: "Guten Tag. Das ist die Stimme des Simulators.", Italian: "Buongiorno. Questa è la voce del simulatore.", "Chinese (Mandarin)": "你好。这是模拟器的声音。", Japanese: "こんにちは。これはシミュレーターの声です。", Portuguese: "Bom dia. Esta é a voz do simulador." };
+const hasLang = () => !!LANGS.find(x => x[0] === F("me.lang"));
+const LN = () => hasLang() ? F("me.lang") : "your target language";
+const LC = () => { const l = LANGS.find(x => x[0] === F("me.lang")); return l ? l[1] : "en"; };
+const LR = () => { const l = LANGS.find(x => x[0] === F("me.lang")); return l ? l[2] : ""; };
+function langPanel() {
+  if (isExample()) return "";
+  return `<div class="panel noprint"><h2>My language</h2><label class="f">The language I am studying<select data-k="me.lang" id="f-me.lang"><option value="">Choose…</option>${LANGS.map(l => `<option>${l[0]}</option>`).join("")}<option>Other</option></select></label><p class="muted small">This sets the search helper and the voice. Your work goes in this language. The app never translates for you.</p></div>`;
+}
+const F = k => { const v = bag(k)[k]; return v == null ? "" : v; };
+
+let saveT = null;
+function setStatus(s) {
+  const el = $("#savest"); if (!el) return;
+  el.className = "status" + (s === "ok" ? " ok" : s === "bad" ? " bad" : "");
+  el.textContent = s === "ex" ? "Example · not saved" : s === "ok" ? "Saved ✓" : s === "bad" ? "NOT saved" : "Saving…";
+}
+function alertBar() {
+  const el = $("#alert"); if (!el) return;
+  el.innerHTML = storageOK ? "" : `<div class="alert" role="alert"><span><b>This browser is not saving your work.</b> Download a backup before you close this tab.</span><button data-act="backup">Download my work</button></div>`;
+}
+function save() { if (locked || isExample()) return; dirty = true; clearTimeout(saveT); setStatus("saving"); saveT = setTimeout(saveNow, 250); }
+function saveNow() {
+  clearTimeout(saveT); if (locked || !dirty || isExample()) return;
+  try { root.at = Date.now(); localStorage.setItem(KEY, JSON.stringify(root)); storageOK = true; dirty = false; setStatus("ok"); }
+  catch (e) { storageOK = false; setStatus("bad"); }
+  alertBar();
+}
+function commit() { dirty = true; saveNow(); }
+window.addEventListener("pagehide", saveNow);
+/* Two tabs: the tab that did NOT just save stops saving, so it cannot overwrite newer work. */
+window.addEventListener("storage", e => {
+  if (e.key !== KEY || locked) return;
+  locked = true; clearTimeout(saveT); stopAll();
+  const d = document.createElement("div"); d.className = "lock"; d.setAttribute("role", "alertdialog"); d.setAttribute("aria-label", "Open in another tab");
+  d.innerHTML = `<div class="panel"><h2>WL AP Research is open in another tab</h2><p>That tab just saved your newest work. This tab has stopped saving, so nothing gets overwritten.</p><p>Keep working in the other tab, or reload this one to see the newest work here.</p><div class="row"><button class="primary" id="lockreload">Reload this tab</button></div></div>`;
+  document.body.appendChild(d);
+  const b = $("#lockreload"); b.addEventListener("click", () => location.reload()); b.focus();
+});
+const ui = { cards: shuffle(CARDS.map((_, i) => i)), yns: shuffle(YESNO.map((_, i) => i)), card: 0, cardDone: null, score: 0, yn: 0, ynDone: null, tab: "read", fake: 0, verdict: null, shown: {}, fold: {} };
+
+function ta(k, label, opt) {
+  opt = opt || {};
+  return `<label class="f">${label}${opt.hint ? `<span class="h">${opt.hint}</span>` : ""}<textarea data-k="${k}" id="f-${k}" lang="${LC()}" class="${opt.cls || ""}"></textarea></label>`;
+}
+function tx(k, label, opt) {
+  opt = opt || {};
+  return `<label class="f">${label}<input type="text" data-k="${k}" id="f-${k}" lang="${LC()}" autocomplete="off"></label>`;
+}
+function head(eyebrow, h1, lead) { return `<div class="head"><div class="row between"><div class="row"><div class="eyebrow">${eyebrow}</div>${hasReal() || isExample() ? `<span class="pill">${modeLabel()}</span>` : ""}</div><div class="langrule">Directions in English · your work in ${LN()}</div></div><h1>${h1}</h1>${lead ? `<p class="lead">${lead}</p>` : ""}</div>`; }
+function foot(id, note) {
+  const i = ROUTES.findIndex(r => r.id === id), p = ROUTES[i - 1], n = ROUTES[i + 1];
+  return `<div class="navfoot noprint"><div class="row">${p ? `<a class="btn" href="#${p.id}">Back</a>` : ""}<button data-act="print">Print this page</button></div><span class="muted small">${note || ""}</span>${n ? `<a class="btn primary" href="#${n.id}">Next: ${esc(n.title)}</a>` : ""}</div>`;
+}
+function fill() {
+  $$("[data-k]", app).forEach(el => {
+    const v = bag(el.dataset.k)[el.dataset.k];
+    if (el.type === "radio") el.checked = v === el.value;
+    else if (el.type === "checkbox") el.checked = !!v;
+    else el.value = v == null ? "" : v;
+    if (isExample()) { if (el.tagName === "SELECT" || el.type === "radio" || el.type === "checkbox") el.disabled = true; else el.readOnly = true; el.lang = "en"; }
+  });
+}
+function critTable(list, prefix) {
+  let last = null, out = "";
+  list.forEach((c, i) => {
+    if (c[0] && c[0] !== last) { out += `<h3 style="margin-top:8px">${esc(c[0])}</h3>`; last = c[0]; }
+    out += `<div class="crit"><div>${esc(c[1])}</div><div class="marks" role="radiogroup" aria-label="Present?">` +
+      [["si", "Yes"], ["no", "No"], ["parte", "Partly"]].map(m => `<label><input type="radio" name="${prefix}${i}" data-k="${prefix}.${i}" value="${m[0]}">${m[1]}</label>`).join("") +
+      `</div><label class="f">Example and suggestion<textarea class="short" data-k="${prefix}x.${i}" id="f-${prefix}x-${i}" lang="${LC()}"></textarea></label></div>`;
+  });
+  return out;
+}
+function scoreRow(rubric, prefix) {
+  return `<div class="scores">` + rubric.map(r => `<label class="f">${r.name}<select data-k="${prefix}.${r.key}" id="f-${prefix}-${r.key}"><option value="">– / ${r.max}</option>${Array.from({ length: r.max + 1 }, (_, n) => `<option value="${n}">${n} / ${r.max}</option>`).join("")}</select></label>`).join("") + `</div>`;
+}
+function total(rubric, prefix) {
+  let t = 0, any = false; rubric.forEach(r => { const v = F(prefix + "." + r.key); if (v !== "") { any = true; t += +v; } });
+  return any ? t : "–";
+}
+function modeSwitch() {
+  const list = [["practice", "Practice prompt"]].concat(hasReal() ? [["real", "Real project"]] : []).concat([["example", "Worked example"]]);
+  return `<div class="row noprint"><b>I am working on:</b><div class="seg" role="group" aria-label="Which prompt">${list.map(m => `<button data-act="mode" data-a="${m[0]}" class="${root.mode === m[0] ? "sel" : ""}" aria-pressed="${root.mode === m[0]}">${m[1]}</button>`).join("")}</div><span class="muted small">${isExample() ? "The worked example is read-only and is never saved." : "Each one keeps its own plan, source cards, PPR and recordings."}</span></div>`;
+}
+function promptBox() {
+  return `${modeSwitch()}<div class="panel soft"><h2>The project prompt${isPractice() ? " (practice)" : isExample() ? " (worked example)" : ""}</h2>
+  ${isPractice() ? `<div class="note">This is a made-up practice prompt. ${hasReal() ? "Switch to the real project when your teacher tells you to." : `College Board releases the real prompt and its six factors in ${PACK.dates.packet}.`}</div>` : ""}
+  <p lang="en">${esc(PR().prompt.en)}</p></div>`;
+}
+
+/* ============================ audio ============================ */
+let run = null, micStream = null, urls = [];
+function stopAll() {
+  if (run) run.cancelled = true; run = null;
+  try { speechSynthesis.cancel(); } catch (e) { }
+  if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+  wakeOff();
+}
+/* Keep the screen on while a timed task or an audio source is running. */
+let wake = null;
+async function wakeOn() {
+  try { if ("wakeLock" in navigator && !wake) { const w = await navigator.wakeLock.request("screen"); wake = w; w.addEventListener("release", () => { if (wake === w) wake = null; }); if (!run) wakeOff(); } } catch (e) { }
+}
+function wakeOff() { try { if (wake) wake.release(); } catch (e) { } wake = null; document.body.classList.remove("busy"); }
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && run) wakeOn(); });
+/* Phones only let a page speak after a tap: say nothing, once, inside the tap. */
+function primeVoice() { try { const u = new SpeechSynthesisUtterance(" "); u.volume = 0; speechSynthesis.speak(u); } catch (e) { } }
+const sentences = p => p.replace(/([.!?…]+[»”"]?)\s+/g, "$1\u0001").split("\u0001").map(x => x.trim()).filter(Boolean);
+async function getMic() {
+  if (micStream) return micStream;
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) throw new Error("unsupported");
+  micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  return micStream;
+}
+function beep() {
+  try {
+    const C = window.AudioContext || window.webkitAudioContext, c = new C(), o = c.createOscillator(), g = c.createGain();
+    o.frequency.value = 880; g.gain.value = 0.15; o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime + 0.3);
+    setTimeout(() => c.close(), 600);
+  } catch (e) { }
+}
+const wait = (ms, r) => new Promise(res => { const t0 = Date.now(); const iv = setInterval(() => { if ((r && (r.cancelled || r.skip)) || Date.now() - t0 >= ms) { clearInterval(iv); if (r) r.skip = false; res(); } }, 100); });
+function countdown(sec, r, tick) {
+  return new Promise(res => {
+    const end = Date.now() + sec * 1000; tick(sec);
+    const iv = setInterval(() => {
+      const left = Math.max(0, Math.ceil((end - Date.now()) / 1000)); tick(left);
+      if (r.cancelled || r.skip || left <= 0) { clearInterval(iv); r.skip = false; res(); }
+    }, 200);
+  });
+}
+const mmss = s => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+async function recordFor(sec, r, tick) {
+  let mr = null, chunks = [];
+  try { const st = await getMic(); mr = new MediaRecorder(st); mr.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); }; mr.start(); } catch (e) { mr = null; }
+  await countdown(sec, r, tick);
+  if (mr && mr.state !== "inactive") { await new Promise(res => { mr.onstop = res; mr.stop(); }); return new Blob(chunks, { type: mr.mimeType || "audio/webm" }); }
+  return null;
+}
+function langVoice(code) {
+  try { const base = String(code).split("-")[0].toLowerCase(), vs = speechSynthesis.getVoices(); return vs.find(v => v.lang.toLowerCase().startsWith(base) && /google/i.test(v.name)) || vs.find(v => v.lang.toLowerCase().startsWith(base)) || null; } catch (e) { return null; }
+}
+function voiceState(code) {
+  if (!("speechSynthesis" in window)) return "none";
+  const vs = speechSynthesis.getVoices(); if (!vs.length) return "unknown";
+  return langVoice(code || LC()) ? "ok" : "none";
+}
+try { speechSynthesis.onvoiceschanged = () => { const el = $("#voicemsg"); if (el) el.innerHTML = voiceMsg(); }; } catch (e) { }
+function voiceMsg() {
+  if (F("me.qsrc") !== "teacher") return "";
+  if (!hasLang()) return `<div class="note">Choose your language on the <a href="#start">Start page</a> first, so the app knows which voice to use.</div>`;
+  return voiceState(LC()) === "none" ? `<div class="note">This device has no ${esc(LN())} voice. The questions will appear as text for a few seconds instead. Tell your teacher.</div>` : "";
+}
+function speak(text, r, lang) {
+  return new Promise(res => {
+    const code = lang || LC();
+    if (voiceState(code) === "none") return res(false);
+    const u = new SpeechSynthesisUtterance(text), v = langVoice(code); u.lang = code; if (v) u.voice = v; u.rate = 0.92;
+    let done = false; const fin = () => { if (!done) { done = true; clearTimeout(t); clearInterval(iv); res(true); } };
+    u.onend = fin; u.onerror = fin;
+    const t = setTimeout(fin, 5000 + text.length * 120);
+    const iv = setInterval(() => { if (r && r.cancelled) { try { speechSynthesis.cancel(); } catch (e) { } fin(); } }, 150);
+    try { if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel(); speechSynthesis.resume(); speechSynthesis.speak(u); } catch (e) { fin(); }
+  });
+}
+
+/* ============================ recordings (IndexedDB) ============================ */
+let dbP = null;
+function db() {
+  if (!dbP) dbP = new Promise((res, rej) => {
+    const q = indexedDB.open("wlAP", 1);
+    q.onupgradeneeded = () => q.result.createObjectStore("recs", { keyPath: "id", autoIncrement: true });
+    q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error);
+  });
+  return dbP;
+}
+async function recPut(o) { const d = await db(); return new Promise((res, rej) => { const t = d.transaction("recs", "readwrite"); const q = t.objectStore("recs").add(o); q.onsuccess = () => res(q.result); t.onerror = () => rej(t.error); }); }
+async function recAll() { try { const d = await db(); return await new Promise((res, rej) => { const q = d.transaction("recs").objectStore("recs").getAll(); q.onsuccess = () => res(q.result || []); q.onerror = () => rej(q.error); }); } catch (e) { return []; } }
+async function recDel(id) { const d = await db(); return new Promise(res => { const t = d.transaction("recs", "readwrite"); t.objectStore("recs").delete(id); t.oncomplete = res; t.onerror = res; }); }
+async function recClear() { try { const d = await db(); return await new Promise(res => { const t = d.transaction("recs", "readwrite"); t.objectStore("recs").clear(); t.oncomplete = res; t.onerror = res; }); } catch (e) { } }
+const mine = r => (r.pack || PACK.id) === PACK.id && (r.mode || "practice") === root.mode;
+function recsHTML(list) {
+  return list.map(r => {
+    const u = URL.createObjectURL(r.blob); urls.push(u);
+    const ext = /ogg/.test(r.blob.type) ? "ogg" : /mp4/.test(r.blob.type) ? "m4a" : "webm";
+    const name = (r.kind === "pres" ? "presentazione" : "domanda") + "-" + new Date(r.at).toISOString().slice(0, 16).replace(/[:T]/g, "-") + "." + ext;
+    return `<div class="rec"><div class="t"><b>${esc(r.label)}</b>${hasReal() ? ` <span class="pill">${r.mode === "real" ? "real project" : "practice"}</span>` : ""}<br><span class="muted">${new Date(r.at).toLocaleString()}</span></div><audio controls preload="none" src="${u}"></audio><a class="btn quiet noprint" href="${u}" download="${name}">Download</a><button class="quiet danger noprint" data-act="recdel" data-id="${r.id}">Delete</button></div>`;
+  }).join("");
+}
+async function renderRecs(sel, filter, empty, all) {
+  if (!$(sel)) return;
+  const list = (all || await recAll()).filter(filter).sort((a, b) => b.at - a.at);
+  const box = $(sel); if (!box) return;
+  box.innerHTML = list.length ? recsHTML(list) : `<p class="muted small">${empty}</p>`;
+}
+/* Q&A answers pile up fast: keep the newest sets for this prompt, delete the older ones. */
+async function pruneQA(keep) {
+  try {
+    const all = (await recAll()).filter(r => r.kind === "qa" && mine(r));
+    const old = Array.from(new Set(all.map(r => r.set || 0))).sort((a, b) => b - a).slice(keep);
+    for (const r of all) if (old.includes(r.set || 0)) await recDel(r.id);
+  } catch (e) { }
+}
+
+/* ============================ views ============================ */
+const views = {}, after = {};
+
+views.start = () => `
+${head("Start", "What does the exam ask of me?", "Five parts. The two blue boxes are your project: 35% of your score. The speaking comes first on exam day.")}
+${modeSwitch()}
+<div class="panel soft noprint"><h2>Want to see a finished project first?</h2><p>The worked example is one complete run of the course project, in English, on 1990s hip-hop in New York and New Jersey. It shows exactly which box each piece of information goes in. It is read-only and never saved. Pick a different community for your own project.</p><button data-act="mode" data-a="example">Open the worked example</button></div>
+<div class="exam">
+  <div class="proj" style="flex:20"><b>Project Presentation</b><br>20% · 3 min to prepare, 3 min to speak</div>
+  <div class="proj" style="flex:15"><b>Project Q&amp;A</b><br>15% · 4 questions, 40 s each</div>
+  <div style="flex:15"><b>Essay</b><br>15% · 55 min</div>
+  <div style="flex:25"><b>Listening</b><br>25% · 25 questions</div>
+  <div style="flex:25"><b>Reading</b><br>25% · 30 questions</div>
+</div>
+<div class="grid2">
+  <a class="panel" href="#trep" style="text-decoration:none;color:inherit"><h2>Skills · start now</h2><p>The three P's · Where to look · Can I trust it? · Source card and citing</p></a>
+  <a class="panel" href="#piano" style="text-decoration:none;color:inherit"><h2>My project · ${isExample() ? "worked example" : isPractice() ? (hasReal() ? "practice prompt" : "practice now, real prompt in " + PACK.dates.packet) : "real project"}</h2><p>Research plan · PPR and rehearsal · Q&amp;A simulator</p></a>
+</div>
+<div class="grid2">
+  <div class="panel"><h2>Presentation · 11 points</h2><p class="muted small">Open a row to see what each score sounds like.</p>${rubricRows(RUBRIC_PRES)}</div>
+  <div class="panel"><h2>Q&amp;A · 9 points</h2><p class="muted small">Only one of your four answers needs the comparison or reflection.</p>${rubricRows(RUBRIC_QA)}</div>
+</div>
+<p class="muted small">${RUBRIC_SRC}</p>
+<div class="grid2">
+  <div class="panel soft"><h2>Three things the scorers say</h2>
+    <p><b>A row scores 0</b> if the answer is not in ${LN()}, is too short to say anything, or was largely created with a translator or generative AI.</p>
+    <p><b>Finishing early is fine</b> if you have done what the row asks.</p>
+    <p><b>Correcting yourself out loud</b> does not cost points.</p></div>
+  <div class="panel soft"><h2>Dates</h2>
+    <p><b>${PACK.dates.packet}</b> · College Board releases the prompt and the sources.</p>
+    <p><b>${PACK.dates.pprDue}, ${PACK.dates.pprDueTime}</b> · You type your PPR into the AP Digital Portfolio.</p>
+    <p><b>${PACK.dates.exam}</b> · Exam day. You have access to your PPR while you present.</p></div>
+</div>
+<div class="panel"><h2>My name</h2>${tx("me.name", "First and last name. It prints at the top of everything you print.")}</div>
+${langPanel()}
+${foot("start", "Rows marked “research” depend on what you find.")}`;
+function rubricRows(rb) {
+  return rb.map(r => `<details><summary>${r.name} · ${r.max} — ${r.tag}${r.research ? ` <span class="pill">research</span>` : ""}</summary><div><div class="lvl">${r.lv.map((t, n) => `<b>${n} point${n === 1 ? "" : "s"}</b><span>${t}</span>`).join("")}</div>${r.ex ? `<div class="itbox"><b>1 point sounds like:</b> <span>${r.ex.one}</span></div><div class="itbox"><b>2 points sounds like:</b> <span>${r.ex.two}</span></div><p class="muted small">The example is about bread on purpose, and is written in English here. On the exam you say it in ${LN()}. You choose your ${PACK.themeEn} topic.</p>` : ""}</div></details>`).join("");
+}
+
+views.trep = () => {
+  const c = CARDS[ui.cards[ui.card]], y = YESNO[ui.yns[ui.yn]];
+  return `
+${head("Skills 1 of 4", "Products, practices, perspectives", "Linking a product or practice to a perspective is worth 2 points in both speaking tasks.")}
+<div class="grid3">
+  <div class="panel"><h2>Product</h2><p>What a culture makes. It can be an object or something you cannot touch, such as a law or a TV programme.</p><div class="itbox">a loaf of bread from the corner bakery</div></div>
+  <div class="panel"><h2>Practice</h2><p>What people do: habits, rituals, ways of behaving.</p><div class="itbox">buying it fresh every morning and chatting with the baker</div></div>
+  <div class="panel key"><h2>Perspective</h2><p>Why: values, beliefs, attitudes. You cannot see it; you work it out.</p><div class="itbox">daily food as a moment to connect with the neighbours</div></div>
+</div>
+<p class="muted small">The examples on this page are not about ${PACK.themeEn} on purpose: you choose your ${PACK.themeEn} topic, the app never does.</p>
+<div class="grid2">
+  <div class="panel"><div class="row between"><h2>Exercise A · Which P is it?</h2><span class="muted small">Card ${ui.card + 1} of ${CARDS.length} · ${ui.score} right</span></div>
+    <div class="itbox" style="font-size:1.15rem">${esc(c.t)}</div>
+    <div class="row">${["prodotto", "pratica", "prospettiva"].map(a => `<button data-act="card" data-fg="A" ${!ui.cardDone && a === "prodotto" ? 'data-focus="A"' : ""} data-a="${a}" style="flex:1 1 150px" ${ui.cardDone ? "disabled" : ""} class="${ui.cardDone && c.a === a ? "sel" : ""}">${PLABEL[a].split(" · ")[0]}</button>`).join("")}</div>
+    ${ui.cardDone ? `<div class="fb ${ui.cardDone === c.a ? "ok" : "no"}"><b>${ui.cardDone === c.a ? "Right." : "Not quite: it is a " + PLABEL[c.a].split(" · ")[0].toLowerCase() + "."}</b> ${c.why}</div><div class="row"><button class="primary" data-act="cardnext" data-fg="A" data-focus="A">${ui.card + 1 < CARDS.length ? "Next card" : "Start again"}</button></div>` : ""}
+  </div>
+  <div class="panel"><div class="row between"><h2>Exercise B · Is this a perspective?</h2><span class="muted small">${ui.yn + 1} of ${YESNO.length}</span></div>
+    <div class="itbox" style="font-size:1.15rem">${esc(y.t)}</div>
+    <div class="row"><button data-act="yn" data-fg="B" ${ui.ynDone == null ? 'data-focus="B"' : ""} data-a="1" style="flex:1" ${ui.ynDone != null ? "disabled" : ""}>Yes, a perspective</button><button data-act="yn" data-fg="B" data-a="0" style="flex:1" ${ui.ynDone != null ? "disabled" : ""}>No</button></div>
+    ${ui.ynDone != null ? `<div class="fb ${ui.ynDone === y.persp ? "ok" : "no"}"><b>${ui.ynDone === y.persp ? "Right." : "Not quite."}</b> ${y.why}</div><div class="row"><button class="primary" data-act="ynnext" data-fg="B" data-focus="B">${ui.yn + 1 < YESNO.length ? "Next one" : "Start again"}</button></div>` : ""}
+    <p class="muted small">Two common mistakes: calling an action a perspective, and calling a written text a perspective. An action is a practice. A text is a product. The perspective is the why.</p>
+  </div>
+</div>
+<div class="panel"><h2>Your turn</h2>
+  <p>Think of something people do in <b>your own</b> community. Describe the practice, then finish the bridge sentence. Write it in ${LN()} and say it out loud too.</p>
+  <div class="grid2">${ta("trep.pratica", "A practice in my community", { hint: "One or two sentences in " + LN() + "." })}${ta("trep.ponte", "The bridge to the perspective", { hint: "Sentence starter: “This practice shows that the community values…”" })}</div>
+</div>
+${foot("trep", "")}`;
+};
+
+function doveQueries() {
+  const kw = F("dove.kw").trim(), lr = LR(), vw = LSEARCH[F("me.lang")] || [];
+  const q = w => `"${kw || "your key words"}" ${w}`.replace(/\s+/g, " ").trim();
+  const g = w => "https://www.google.com/search?q=" + encodeURIComponent(q(w)) + (lr ? "&lr=lang_" + lr : "");
+  const variants = [["", "everything"]].concat(vw[0] ? [[vw[0], "interviews"], [vw[1], "audio"], [vw[2], "numbers"], [vw[3], "background"]] : []);
+  const go = (href, label) => kw ? `<a class="btn quiet noprint" target="_blank" rel="noopener" href="${href}">${label}</a>` : `<button class="quiet noprint" disabled>${label}</button>`;
+  return (hasLang() ? "" : `<p class="muted small">Choose your language on the <a href="#start">Start page</a> so the results are in that language.</p>`) + (kw ? "" : `<p class="muted small">Type your key words first. Then the search buttons switch on.</p>`) +
+    variants.map(v => `<div class="qrow"><div class="query" lang="${LC()}">${esc(q(v[0]))}</div>${go(g(v[0]), "Search " + v[1])}</div>`).join("") +
+    `<div class="row">${go("https://www.youtube.com/results?search_query=" + encodeURIComponent(kw), "Search YouTube with my words")}</div>`;
+}
+views.dove = () => `
+${head("Skills 2 of 4", "Where do I find sources in " + LN() + "?", "Places to search, not ready-made answers. Each one is labeled so you know whether it opens on a school Chromebook.")}
+<div class="tabs noprint" role="tablist">${[["read", "Read"], ["listen", "Listen and watch"], ["data", "Data and charts"]].map(t => `<button role="tab" aria-selected="${ui.tab === t[0]}" data-act="tab" data-a="${t[0]}" class="${ui.tab === t[0] ? "sel" : ""}">${t[1]}</button>`).join("")}</div>
+<div class="grid2">
+  <div class="panel"><div>${PACK.themeSites.filter(s => s.cat === ui.tab).concat(SITES[ui.tab]).map(s => { const l = PACK.siteLabels[s.k] || "untested"; return `<div class="site"><div><a href="${s.url}" target="_blank" rel="noopener"><b>${esc(s.name)}</b></a><br><span class="small">${esc(s.d)}</span></div><span class="pill ${l}">${SITE_LABEL[l]}</span></div>`; }).join("")}</div>
+    <p class="muted small">Blocked at school? Tell your teacher which site, and use it from home.</p></div>
+  <div class="stack">
+    <div class="panel"><h2>Build your search in ${LN()}</h2>
+      ${tx("dove.kw", "My key words (in " + LN() + ")")}
+      <div id="queries" class="stack" style="gap:8px">${doveQueries()}</div>
+      <p class="muted small">The language filter keeps the results to pages written in ${LN()}. The quotation marks keep your words together. The extra words (interviews, audio, numbers, background) are search helpers in ${LN()}.</p></div>
+    <div class="panel soft"><h2>How to listen to a source</h2><p><b>1</b> First time: just the main idea.</p><p><b>2</b> Second time: pause and note names and numbers.</p><p><b>3</b> Slow the speed, or turn on ${LN()} subtitles or the transcript if there is one.</p></div>
+    <div class="panel soft"><h2>AI and translators</h2><p>Follow College Board's AI Guidance for this course and your teacher's rules.</p><p><b>A dictionary: yes.</b> Look up words and expressions.</p><p><b>A translator for a whole page or a whole source: no.</b> Read and listen in ${LN()}, and write your own work in ${LN()}.</p></div>
+  </div>
+</div>
+${foot("dove", "")}`;
+
+views.fidarsi = () => {
+  const p = FAKES[ui.fake], v = ui.verdict, names = { use: "Use it", care: "Use with care", drop: "Drop it" };
+  return `
+${head("Skills 3 of 4", "Can I trust this source?", "Five questions for every source. The first one sends you off the page: what others say about a site tells you more than the site says about itself.")}
+<div class="grid2">
+  <div class="stack"><div class="row between"><h2>Practice source ${ui.fake + 1} of ${FAKES.length}</h2><span class="pill">invented for this exercise</span></div>
+    <div class="fake" lang="en"><div class="url">${esc(p.url)}</div><div class="pg"><div class="site-name">${esc(p.site)}</div><h3>${esc(p.title)}</h3><div class="by">${esc(p.by)}</div>${p.body.map(b => `<p>${esc(b)}</p>`).join("")}</div></div>
+    <div class="row noprint"><button data-act="fake" data-a="-1" ${ui.fake === 0 ? "disabled" : ""}>Previous source</button><button data-act="fake" data-a="1" ${ui.fake === FAKES.length - 1 ? "disabled" : ""}>Next source</button></div>
+  </div>
+  <div class="panel"><h2>The five questions</h2>
+    <div>${TRUSTQ.map((q, i) => `<label class="chk"><input type="checkbox" id="tq${ui.fake}-${i}">${q.replace("{LN}", LN())}</label>`).join("")}</div>
+    <h3>Your verdict</h3>
+    <div class="row">${Object.keys(names).map(k => `<button data-act="verdict" data-fg="V" data-a="${k}" style="flex:1 1 120px" class="${v === k ? "sel" : ""}" ${v ? "disabled" : ""}>${names[k]}</button>`).join("")}</div>
+    ${v ? `<div tabindex="-1" data-focus="V" class="fb ${p.ok[0] === v ? "ok" : p.ok.includes(v) ? "mid" : "no"}"><b>${p.ok[0] === v ? "Good call." : p.ok.includes(v) ? "Reasonable." : "Look again."}</b> ${p.why}</div><div class="itbox"><b>Say it in ${LN()}.</b> Model in English: <span>${p.say}</span></div>` : `<p class="muted small">Tick the questions as you check them, then choose.</p>`}
+  </div>
+</div>
+<div class="panel soft"><p><b>Stereotypes are a warning sign too.</b> A source that says “all the people of…” or “nobody…” is generalizing. On the exam, generalizations lose the culture points; researched examples earn them.</p></div>
+${foot("fidarsi", "")}`;
+};
+
+views.scheda = () => {
+  const i = Math.min(P().cur, P().nCards - 1), k = n => `c${i}.${n}`, fx = P().f[k("fx")] || [];
+  return `
+${head("Skills 4 of 4", "One card for every source", "The same boxes as College Board's organizer (the Source Material Graphic Organizer). Use it for packet sources and for the ones you find yourself.")}
+<div class="row between noprint"><div class="row">${Array.from({ length: P().nCards }, (_, n) => `<button data-act="cardsel" data-a="${n}" class="${n === i ? "sel" : ""}">Card ${n + 1}</button>`).join("")}<button data-act="cardadd">+ New card</button><button data-act="printcards">Print all my cards</button></div>${P().nCards > 1 ? `<button class="quiet danger" data-act="carddel">${ui.confirmCard ? "Press again to delete this card" : "Delete this card"}</button>` : ""}</div>
+<div class="grid2">
+  <div class="panel"><h2>About the source · card ${i + 1}</h2>
+    <label class="f">Kind of source<select data-k="${k("tipo")}" id="f-${k("tipo")}"><option value=""></option><option>article</option><option>video</option><option>audio or podcast</option><option>chart or table</option><option>interview</option><option>other</option></select></label>
+    ${tx(k("titolo"), "Title", {})}
+    ${tx(k("autore"), "Author or creator", {})}
+    ${tx(k("data"), "Date published, if given", {})}
+    ${tx(k("link"), "Where I found it (site or link)")}
+    ${ta(k("riassunto"), "Key points", { hint: "Two or three sentences, or a short list." })}
+    ${ta(k("parole"), "Key words and expressions", { cls: "short" })}
+    ${ta(k("domanda"), "If you could, what would you ask the author?", { cls: "short" })}
+  </div>
+  <div class="panel"><h2>What the source means</h2>
+    ${ta(k("prodotti"), "Cultural products or practices in it", { hint: "For example clothing, instruments, food, works of art, traditions, routines, celebrations." })}
+    <div class="panel key" style="padding:12px">${ta(k("prospettive"), "Cultural perspectives in it", { hint: "Beliefs, values, views of the world." })}</div>
+    <div class="stack" style="gap:6px"><b style="font-size:.92rem">Which of the six prompt factors does it help with?</b>
+      <div class="grid3">${PR().factors.map(f => `<button class="factor ${fx.includes(f.id) ? "sel" : ""}" data-act="cardfx" data-a="${f.id}" aria-pressed="${fx.includes(f.id)}"><span>${f.id}. ${esc(f.name)}</span><small>${f.group === "persp" ? "perspective" : "product or practice"}</small></button>`).join("")}</div></div>
+    ${ta(k("fattori"), "Examples from the source for those factors", { cls: "short" })}
+    ${ta(k("confronto"), "How does this compare with your own community?", { hint: "This box is practice for the Q&A, where one comparison earns the culture points." })}
+  </div>
+</div>
+<div class="panel soft"><h2>Say the source out loud</h2><p>In a talk there are no footnotes. Name the source as you speak:</p>
+  <div class="chips"><span class="chip">According to…</span><span class="chip">As … explains…</span><span class="chip">In an interview with…</span><span class="chip">The data from… show that…</span></div><p class="muted small">Say these in ${LN()}. Learn the exact phrases from your teacher or textbook; the app does not supply them.</p></div>
+${foot("scheda", "")}`;
+};
+
+views.piano = () => {
+  const pk = picks(), okP = pk.some(id => factor(id).group === "persp"), persp = PR().factors.filter(f => f.group === "persp").map(f => f.id).join(" or ");
+  const msg = ui.pickMsg || (pk.length < 3 ? `Choose ${3 - pk.length} more.` : okP ? "Three chosen, with at least one perspective." : `You need at least one perspective (${persp}). Change one of your choices.`);
+  return `
+${head("My project 1 of 3", "My research plan", "The same four parts as College Board's plan (the Research Action Plan template). The plan can change as your research grows.")}
+${promptBox()}
+<div class="panel"><h2>Part 1 · My topic and my community</h2><p class="muted small">You may list more than one idea and change it later.</p>
+  <div class="grid2">${ta("p.topic", "Presentation topic", { cls: "short" })}${ta("p.community", "Community or region I chose", { cls: "short" })}</div></div>
+<div class="panel"><h2>Part 2 · Choose three of the six factors</h2>
+  <div class="grid3">${PR().factors.map(f => `<button class="factor ${pk.includes(f.id) ? "sel" : ""}" data-act="pick" data-a="${f.id}" aria-pressed="${pk.includes(f.id)}"><span><b>${f.id}. ${esc(f.name)}</b></span><small>${esc(f.ex)}</small><small>${f.group === "persp" ? "perspective" : "product or practice"}</small></button>`).join("")}</div>
+  <div role="status" class="fb ${ui.pickMsg ? "no" : pk.length === 3 && okP ? "ok" : "mid"}">${msg} The Q&amp;A can ask about all six, including the ones you did not choose.</div>
+  ${pk.map(id => { const f = factor(id); return `<div class="stack" style="gap:8px"><h3>Factor ${f.id}. ${esc(f.name)}</h3><div class="grid2">${ta("p.rel.f" + id, "Why it fits the prompt and my topic", {})}${ta("p.info.f" + id, "What I need to find out", {})}</div></div>`; }).join("")}
+  ${pk.length < 3 ? `<p class="muted small">Each factor you choose opens its two boxes here. What you write stays with that factor, even if you take it off and choose it again.</p>` : ""}
+</div>
+<div class="panel"><h2>Part 3 · How I will collect information</h2>
+  <div class="grid2">${ta("p.terms", "Search terms", {})}${ta("p.res", "Where I will look", {})}${ta("p.people", "People or organizations to contact", {})}${ta("p.org", "How I will keep and organize my notes", {})}</div></div>
+<div class="panel"><h2>Part 4 · Three to five SMART goals</h2>
+  <p class="muted small">Specific, measurable, achievable, relevant, with a deadline.</p>
+  <div class="itbox"><b>College Board's example (paraphrased):</b> <span>I will find three reliable sources (two articles and a podcast) about factor 1 and take notes on each one with the source organizer. By the end of next class.</span></div>
+  ${Array.from({ length: P().nGoals }, (_, n) => `<div class="goalrow">${ta("g" + n + ".goal", "Goal " + (n + 1), { cls: "short" })}${ta("g" + n + ".when", "By when", { cls: "short" })}</div>`).join("")}
+  <div class="row noprint">${P().nGoals < 5 ? `<button data-act="goaladd">+ Add a goal</button>` : ""}${P().nGoals > 3 ? `<button class="quiet" data-act="goaldel">${ui.confirmGoal ? "Press again: goal " + P().nGoals + " and its text are deleted" : "Remove the last goal"}</button>` : ""}</div></div>
+${foot("piano", "PPR due " + PACK.dates.pprDue + " · Exam " + PACK.dates.exam)}`;
+};
+
+function pprCheck(v) {
+  const n = (v.trim().match(/\S+/g) || []).length; let m = "";
+  if (isExample()) return { n, m };
+  const toks = v.toLowerCase().replace(/[.,;:!?«»"()。、！？]/g, " ").split(/\s+/);
+  const verbs = new Set();
+  if (n > PPR_LIMIT) m = `Over ${PPR_LIMIT} words. The real PPR will not accept this.`;
+  else if (toks.some(t => verbs.has(t)) || /[.!?。！？]\s*$/.test(v.trim()) || /[.;]\s+\S/.test(v)) m = "This looks like a sentence. Use key words only: no full stops.";
+  return { n, m };
+}
+function pprRows() {
+  return PPR_BOXES.map(b => { const c = pprCheck(F("ppr." + b[0])); return `<div class="pprrow"><label for="f-ppr.${b[0]}"><b>${b[1]}</b></label><input type="text" data-k="ppr.${b[0]}" id="f-ppr.${b[0]}" lang="${LC()}" autocomplete="off"><span class="cnt ${c.n > PPR_LIMIT ? "over" : ""}" id="cnt-${b[0]}">${c.n}/${PPR_LIMIT}</span><span class="pprmsg" id="msg-${b[0]}">${c.m}</span></div>`; }).join("");
+}
+views.ppr = () => `
+${head("My project 2 of 3", "Key words, not a script", `Seven boxes, ${PPR_LIMIT} ${isExample() ? "English" : LN()} words each. A talk that sounds read or memorized scores 0 for delivery, so the boxes hold key words and you say it fresh each time.`)}
+<div class="grid2">
+  <div class="panel"><h2>${isExample() ? "The example PPR (in English)" : "My PPR draft (in " + LN() + ")"}</h2>
+    ${pprRows()}
+    <div class="note">Practice copy only. You type the real PPR yourself into the AP Digital Portfolio by ${PACK.dates.pprDue}. The ${PPR_LIMIT}-word limit comes from College Board's template as shared in a teacher workshop: check the limit shown in the Portfolio. The sentence warning is a rough check, not a rule.</div>
+    <div class="row noprint"><button data-act="printppr">Print my PPR only</button><span class="muted small">On exam day you have access to your PPR. Rehearse from a copy of it, not from extra notes.</span></div>
+  </div>
+  <div class="stack">
+    <div class="panel" id="reh" data-nofold></div>
+    <div class="panel"><h2>My rehearsals</h2><div id="recs-pres"></div><p class="muted small">Recordings stay on this device until you download or delete them. Say it a little differently each time.</p></div>
+  </div>
+</div>
+<div class="panel"><div class="row between"><h2>Score myself</h2><b id="tot-ps">${total(RUBRIC_PRES, "ps")} / 11</b></div>
+  <p class="muted small">Listen to a rehearsal first. Your own score for Language and Delivery is a guess: ask your teacher or a classmate to fill in the form below too.</p>
+  ${scoreRow(RUBRIC_PRES, "ps")}</div>
+<div class="panel"><h2>Practice Presentation feedback form</h2>
+  <p class="muted small">College Board's practice form. For each line: is it in the talk? Give an example from the talk. Judge, do not rewrite.</p>
+  ${critTable(CRIT_PRES, "pf")}</div>
+${foot("ppr", "")}`;
+function rehIdle(note) {
+  return `<h2>Timed rehearsal</h2><div class="row"><div class="clockbox" style="flex:1"><div class="clock">3:00</div><span>to prepare</span></div><div class="clockbox" style="flex:1"><div class="clock">3:00</div><span>to present</span></div></div>
+  ${note || ""}<div class="row"><button class="primary" data-act="rehstart">Start: prepare, then record</button></div>
+  <p class="muted small">During the rehearsal you see only the prompt and your PPR, as on exam day.</p>`;
+}
+after.ppr = () => { $("#reh").innerHTML = rehIdle(); renderRecs("#recs-pres", r => r.kind === "pres" && mine(r), "No rehearsals recorded yet."); };
+async function rehearsal() {
+  stopAll(); const r = run = { cancelled: false, skip: false }, box = $("#reh"); wakeOn(); document.body.classList.add("busy");
+  let mic = true; try { await getMic(); } catch (e) { mic = false; }
+  if (r.cancelled || !$("#reh")) return;
+  const pprList = PPR_BOXES.map(b => `<div><b>${b[1]}:</b> <span lang="${LC()}">${esc(F("ppr." + b[0])) || "—"}</span></div>`).join("");
+  const frame = (phase, label, btn) => `<h2>Timed rehearsal</h2><div class="livebar"><div class="clockbox ${phase === "rec" ? "live" : ""}"><div class="clock" id="clk">3:00</div><span>${label}</span></div>
+    <div class="row"><button class="primary" data-act="rehskip">${btn}</button><button data-act="rehstop">Stop without saving</button></div></div>
+    ${mic ? "" : `<div class="note">No microphone: the timer runs, but nothing is recorded. Allow the microphone for this page and start again.</div>`}
+    <div class="itbox"><p lang="en">${esc(PR().prompt.en)}</p></div><div class="itbox">${pprList}</div>`;
+  box.innerHTML = frame("prep", "to prepare. Nothing is being recorded yet.", "I'm ready: start presenting");
+  await countdown(180, r, s => { const c = $("#clk"); if (c) c.textContent = mmss(s); });
+  if (r.cancelled || !$("#reh")) return;
+  beep(); box.innerHTML = frame("rec", mic ? "Recording. Speak now." : "Speak now.", "I've finished");
+  const blob = await recordFor(180, r, s => { const c = $("#clk"); if (c) c.textContent = mmss(s); });
+  if (r.cancelled) return;
+  beep(); if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+  if (blob && blob.size) await recPut({ kind: "pres", label: "Presentation rehearsal", at: Date.now(), blob, pack: PACK.id, mode: root.mode });
+  run = null; wakeOff(); if (!$("#reh")) return;
+  $("#reh").innerHTML = rehIdle(`<div class="fb ok">${blob && blob.size ? "Saved. Listen back below, then score yourself." : "Finished. Nothing was recorded."}</div>`);
+  renderRecs("#recs-pres", x => x.kind === "pres" && mine(x), "No rehearsals recorded yet.");
+}
+
+views.qa = () => `
+${head("My project 3 of 3", "Four questions I haven't seen", `On exam day each question is asked in ${LN()}, plays twice, and you have 40 seconds to answer. Here the questions come from an English practice bank (your teacher says them aloud in ${LN()}, or you read and answer in ${LN()}), or from your teacher's own questions in ${LN()}, which the app speaks. A different set every time.`)}
+<div class="grid2">
+  <div class="panel" id="sim" data-nofold></div>
+  <div class="stack">
+    <div class="panel"><h2>What the questions can ask you to do</h2>
+      <div class="chips">${Object.keys(QTYPES).map(k => `<span class="chip ${k === "conf" || k === "rifl" ? "key" : ""}">${QTYPES[k]}</span>`).join("")}</div>
+      <p class="muted small">Questions can be about any of the six prompt factors, even the three you did not choose. Every practice set here includes one comparison or reflection (blue): that answer is where the culture points are.</p></div>
+    <div class="panel soft"><h2>Fill the 40 seconds</h2><div class="steps"><div><b>1</b> Answer</div><div><b>2</b> Give an example</div><div><b>3</b> Explain or compare</div></div>
+      <p class="small">Missing a word? Talk around it in ${LN()}: say what it is like, what it is for, or use another word you know. Note every part of the question.</p></div>
+    ${ta("qa.notes", "Notes while I listen", { cls: "short" })}
+  </div>
+</div>
+<div class="panel" id="review" data-nofold></div>
+<div class="panel"><div class="row between"><h2>Score myself</h2><b id="tot-qs">${total(RUBRIC_QA, "qs")} / 9</b></div>${scoreRow(RUBRIC_QA, "qs")}</div>
+<div class="panel"><h2>Practice Q&amp;A feedback form</h2><p class="muted small">College Board's practice form. Listen back, then mark each line.</p>${critTable(CRIT_QA, "qf")}</div>
+<div class="panel"><h2>Project Q&amp;A preparation worksheet</h2>
+  <p>Write four questions you think the committee could ask after <b>your</b> presentation. Mix the kinds of question above. Then answer them out loud.</p>
+  <div class="grid2">${[1, 2, 3, 4].map(n => ta("aq" + n, "Question " + n, { cls: "short" })).join("")}</div></div>
+${foot("qa", "")}`;
+function simIdle(note) {
+  const tq = F("me.qsrc") === "teacher";
+  return `<h2>Simulator</h2><div class="steps">${[1, 2, 3, 4].map(n => `<div>Question ${n}</div>`).join("")}</div>
+  <label class="f">Where the questions come from<select data-k="me.qsrc" id="f-me.qsrc"><option value="bank" ${tq ? "" : "selected"}>English practice bank (shown on screen)</option><option value="teacher" ${tq ? "selected" : ""}>My teacher's questions in ${esc(LN())} (spoken aloud)</option></select></label>
+  ${tq ? `<label class="f">My teacher's questions, one per line (at least four)<span class="h">Type or paste the questions your teacher wrote in ${esc(LN())}. The app picks four at random and speaks each one twice with a voice for that language. The app never writes or translates questions.</span><textarea data-k="me.tq" id="f-me.tq" lang="${LC()}" class="tall">${esc(F("me.tq"))}</textarea></label>
+  <label class="chk"><input type="checkbox" data-k="me.showq" ${F("me.showq") ? "checked" : ""}>Show each question as text while it plays (hearing accommodation: only if your teacher tells you to)</label>`
+  : `<p class="muted small">Each question appears on screen in English for a few seconds. Your teacher can say it aloud in ${esc(LN())}, or you read it and answer in ${esc(LN())}. The app does not translate for you.</p>
+  <label class="chk"><input type="checkbox" data-k="me.readq" ${F("me.readq") ? "checked" : ""}>Also read each question aloud in English</label>`}
+  <div id="voicemsg">${voiceMsg()}</div>${note || ""}
+  <div class="row"><button class="primary" data-act="qastart">Start a set of four</button><button data-act="voicetest">Test the voice</button></div>
+  <p class="muted small">The app keeps the recordings of your last 3 sets: download any answer you want to keep longer. The written questions appear after all four answers.</p>`;
+}
+function reviewHTML() {
+  if (!P().lastQA.length) return `<h2>After all four answers</h2><p class="muted">Your last set appears here: each recording with its written question.</p>`;
+  return `<h2>My last set</h2>` + P().lastQA.map((q, i) => `<div class="stack" style="gap:6px"><div><b>Question ${i + 1}</b> <span class="pill">${QTYPE_EN[q.t]}</span></div><div class="itbox">${esc(q.q)}</div><div id="qrec${i}"></div></div>`).join("");
+}
+async function renderReview() {
+  const el = $("#review"); if (!el) return; el.innerHTML = reviewHTML();
+  const last = P().lastQA; if (!last.length) return;
+  const all = await recAll();
+  last.forEach((q, i) => renderRecs("#qrec" + i, r => r.id === q.rec, "No recording for this answer.", all));
+}
+after.qa = () => { $("#sim").innerHTML = simIdle(); renderReview(); };
+function pickSet() {
+  const types = Object.keys(QB()), sh = a => a.map(x => [Math.random(), x]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
+  const key = sh(["conf", "rifl"])[0], rest = sh(types.filter(t => t !== key)).slice(0, 3);
+  const chosen = sh([key].concat(rest));
+  return chosen.map(t => {
+    let pool = QB()[t].map((q, i) => ({ id: t + i, q })).filter(x => !P().used.includes(x.id));
+    if (!pool.length) { P().used = P().used.filter(id => !id.startsWith(t)); pool = QB()[t].map((q, i) => ({ id: t + i, q })); }
+    const p = sh(pool)[0]; P().used.push(p.id); return { t, q: p.q };
+  });
+}
+async function qaSet() {
+  stopAll(); const r = run = { cancelled: false, skip: false }, proj = P(), mode = root.mode; wakeOn(); document.body.classList.add("busy");
+  let mic = true; try { await getMic(); } catch (e) { mic = false; }
+  if (r.cancelled || !$("#sim")) return;
+  const teacher = F("me.qsrc") === "teacher", tc = LC(), lines = F("me.tq").split(/\n+/).map(x => x.trim()).filter(Boolean);
+  if (teacher && lines.length < 4) { stopAll(); document.body.classList.remove("busy"); $("#sim").innerHTML = simIdle(`<div class="fb no">Type at least four questions in the teacher box first. You have ${lines.length}.</div>`); return; }
+  const set = teacher ? shuffle(lines).slice(0, 4).map(q => ({ t: "teacher", q })) : pickSet(), textMode = teacher ? (!hasLang() || voiceState(tc) === "none") : true, showQ = teacher ? !!F("me.showq") : true, plays = teacher ? 2 : 1, setId = Date.now(), out = [];
+  const frame = (i, phase, label, extra) => `<h2>Simulator</h2><div class="livebar"><div class="steps">${[0, 1, 2, 3].map(n => `<div class="${n < i ? "done" : n === i ? "now" : ""}">Question ${n + 1}</div>`).join("")}</div>
+    <div class="clockbox ${phase === "rec" ? "live" : ""}"><div class="clock" id="clk">${phase === "rec" ? "0:40" : "…"}</div><span id="lbl">${label}</span></div>
+    <div class="row"><button data-act="qastop">Stop this set</button></div></div>${extra || ""}
+    ${mic ? "" : `<div class="note">No microphone: the timer runs, but nothing is recorded.</div>`}`;
+  const qtext = i => `<div class="itbox" lang="${teacher ? tc : "en"}">${esc(set[i].q)}</div>`;
+  for (let i = 0; i < 4; i++) {
+    for (let play = 1; play <= plays; play++) {
+      if (r.cancelled || !$("#sim")) return;
+      $("#sim").innerHTML = frame(i, "listen", teacher ? `Listen · play ${play} of 2` : "Read the question", textMode || showQ ? qtext(i) : "");
+      if (!teacher) { if (F("me.readq") && voiceState("en-US") !== "none") await speak(set[i].q, r, "en-US"); else await wait(7000, r); }
+      else if (textMode) await wait(9000, r); else await speak(set[i].q, r, tc);
+      if (r.cancelled) return; await wait(1200, r);
+    }
+    if (r.cancelled || !$("#sim")) return;
+    beep(); $("#sim").innerHTML = frame(i, "rec", mic ? "Recording. Answer now." : "Answer now.", showQ ? qtext(i) : "");
+    const blob = await recordFor(40, r, s => { const c = $("#clk"); if (c) c.textContent = mmss(s); });
+    if (r.cancelled) return;
+    let id = null; if (blob && blob.size) id = await recPut({ kind: "qa", label: "Q&A answer " + (i + 1), at: Date.now(), blob, pack: PACK.id, mode, set: setId });
+    out.push({ t: set[i].t, q: set[i].q, rec: id }); beep(); await wait(1500, r);
+  }
+  if (r.cancelled) return;
+  if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+  proj.lastQA = out; commit(); run = null; wakeOff(); await pruneQA(3); if (!$("#sim")) return;
+  $("#sim").innerHTML = simIdle(`<div class="fb ok">Set finished. Read the questions and listen back below, then score yourself.</div>`);
+  renderReview(); const rv = $("#review"); if (rv) rv.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+views.pacchetto = () => {
+  const pr = PR(), pk = pr.packet || [];
+  return `
+${head(isExample() ? "Worked example" : isPractice() ? "Practice packet" : "Real project", `<span lang="en">${esc(pr.title || "The project prompt")}</span>`, isExample() ? "The prompt, the six factors and the four reflection questions, with the example student's reflection filled in." : isPractice() ? `A made-up practice prompt in the same layout as College Board's: a prompt with six factors and four reflection questions. It is for learning the steps. The real packet, with its sources, arrives in ${PACK.dates.packet} and will be different.` : "The real prompt, its six factors and the four reflection questions. The real sources are in your AP Digital Portfolio, or come from your teacher.")}
+${modeSwitch()}
+${pr.packetNote ? `<div class="note">${pr.packetNote}</div>` : ""}
+<div class="panel"><h2>The prompt</h2><p lang="en">${esc(pr.prompt.en)}</p>
+  <div class="tablewrap"><table><tr><th></th><th>Factors</th><th>Examples</th></tr>${pr.factors.map(f => `<tr><td>${f.group === "persp" ? "Perspectives" : "Products and practices"}</td><td>${f.id}. ${esc(f.name)}</td><td>${esc(f.ex)}</td></tr>`).join("")}</table></div></div>
+${pk.map(s => `<div class="panel"><div class="row between"><h2>Source ${s.n}</h2><span class="pill">${s.real}</span></div>
+  <p><i>${esc(s.intro)}</i></p>${s.title ? `<h3>${esc(s.title)}</h3>` : ""}
+  ${s.audio ? `<div class="row noprint"><button class="primary" data-act="srcplay" data-a="${s.n}">Listen</button><button data-act="srcstop">Stop</button><button data-act="srcshow" data-a="${s.n}">${ui.shown[s.n] ? "Hide the script" : "Show the script"}</button><span class="muted small" role="status" id="srcst${s.n}"></span></div><p class="muted small">This is an audio source: listen first, twice, before you read. The device's voice reads it; your teacher may read it aloud instead.</p>` : ""}
+  ${s.table ? `<div class="tablewrap"><table>${s.table.map((row, i) => `<tr>${row.map(c => i === 0 ? `<th>${esc(c)}</th>` : `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</table></div>` : ""}
+  ${s.body && (!s.audio || ui.shown[s.n]) ? s.body.map(b => `<p>${esc(b)}</p>`).join("") : ""}</div>`).join("")}
+<div class="panel"><h2>Initial written reflection</h2>
+  <p class="muted small">Answer all four questions. Use information from at least three of the sources. It is a reflection, not a summary. College Board does not score it.</p>
+  ${pr.reflection.map((q, i) => ta("r" + i, (i + 1) + ". " + esc(q), { cls: "tall" })).join("")}</div>
+<div class="panel"><h2>Initial written reflection feedback form</h2>${critTable(CRIT_RIFL, "rf")}</div>
+${pr.facts ? `<div class="panel soft"><h2>Where the real facts come from</h2><p class="small">${pr.facts}</p></div>` : ""}
+${foot("pacchetto", "")}`;
+};
+
+const sumSec = (t, rows) => { const r = rows.filter(x => String(x[1]).trim()); return r.length ? `<div class="panel"><h2>${t}</h2>${r.map(x => `<div><b>${esc(x[0])}</b><div lang="${LC()}" style="white-space:pre-wrap">${esc(x[1])}</div></div>`).join("")}</div>` : ""; };
+function cardSummary(i) {
+  const k = n => F(`c${i}.${n}`), fx = (P().f[`c${i}.fx`] || []).filter(id => factor(id)).map(id => id + ". " + factor(id).name).join("; ");
+  return sumSec("Source card " + (i + 1), [["Kind of source", k("tipo")], ["Title", k("titolo")], ["Author or creator", k("autore")], ["Date", k("data")], ["Where I found it", k("link")], ["Key points", k("riassunto")], ["Key words and expressions", k("parole")], ["Question for the author", k("domanda")], ["Products and/or practices", k("prodotti")], ["Perspectives", k("prospettive")], ["Factors", fx], ["Examples for the factors", k("fattori")], ["Comparison with my community", k("confronto")]]);
+}
+function summaryHTML() {
+  let h = sumSec("The three P's", [["A practice in my community", F("trep.pratica")], ["The bridge", F("trep.ponte")]]);
+  for (let i = 0; i < P().nCards; i++) h += cardSummary(i);
+  h += sumSec("Research plan", [["Topic", F("p.topic")], ["Community or region", F("p.community")], ["Factors chosen", picks().map(id => id + ". " + factor(id).name).join("; ")]]
+    .concat(picks().flatMap(id => [["Why it fits · factor " + id, F("p.rel.f" + id)], ["What to find out · factor " + id, F("p.info.f" + id)]]))
+    .concat([["Search terms", F("p.terms")], ["Where to look", F("p.res")], ["People or organizations", F("p.people")], ["Keeping notes", F("p.org")]])
+    .concat(Array.from({ length: P().nGoals }, (_, n) => ["Goal " + (n + 1), [F("g" + n + ".goal"), F("g" + n + ".when")].filter(Boolean).join(" — ")])));
+  h += sumSec("PPR draft", PPR_BOXES.map(b => [b[1], F("ppr." + b[0])]));
+  h += sumSec("Scores I gave myself", [["Presentation", total(RUBRIC_PRES, "ps") === "–" ? "" : total(RUBRIC_PRES, "ps") + " / 11"], ["Q&A", total(RUBRIC_QA, "qs") === "–" ? "" : total(RUBRIC_QA, "qs") + " / 9"]]);
+  h += sumSec("Possible Q&A questions", [1, 2, 3, 4].map(n => ["Question " + n, F("aq" + n)]));
+  h += sumSec("Initial written reflection", PR().reflection.map((q, i) => [q, F("r" + i)]));
+  return h || `<p class="muted">Nothing written yet.</p>`;
+}
+views.lavoro = () => `
+${head("Save and print", "Keep my work safe", "Your work is saved on this device only, in this browser. Nobody else can see it, not even your teacher. Download a backup often, and always before you hand in.")}
+${modeSwitch()}
+<div class="panel noprint"><h2>My name</h2>${tx("me.name", "First and last name. It prints at the top of everything you print.")}</div>
+<div class="grid2 noprint">
+  <div class="panel"><h2>Backup file</h2><p>One small file with everything you typed${hasReal() ? ", practice and real project" : ""}. Keep it in your Google Drive. Recordings are not included: download those one by one.</p>
+    <div class="row"><button class="primary" data-act="backup">Download my work</button><label class="btn" for="restore" tabindex="0" role="button">Load a backup file</label><input type="file" id="restore" accept=".json,application/json" hidden></div><div id="bmsg"></div></div>
+  <div class="panel"><h2>Hand in as a PDF</h2><p>Press the button, then choose <b>Save as PDF</b> as the printer. Attach the PDF, and any recordings you downloaded, to the assignment.</p>
+    <div class="row"><button class="primary" data-act="print">Print all my work</button></div></div>
+</div>
+<div class="panel noprint"><h2>All my recordings</h2><div id="recs-all"></div></div>
+<h2>Everything I have written${hasReal() || isExample() ? " · " + modeLabel().toLowerCase() : ""}</h2>
+${summaryHTML()}
+<div class="panel noprint"><h2>Start over</h2><p class="muted small">Erases everything typed and recorded on this device${hasReal() ? ", for the practice prompt and the real project" : ""}. Download a backup first.</p><div class="row"><button class="danger" data-act="erase">${ui.confirmErase ? "Press again to erase everything" : "Erase all my work"}</button></div></div>
+<div class="navfoot noprint"><a class="btn" href="#pacchetto">Back</a><span></span></div>`;
+after.lavoro = () => {
+  renderRecs("#recs-all", () => true, "No recordings on this device.");
+  $("#restore").addEventListener("change", e => {
+    const f = e.target.files[0]; if (!f) return; const rd = new FileReader();
+    rd.onload = () => {
+      let raw = null, s = null; try { raw = JSON.parse(rd.result); s = normalize(raw); } catch (err) { }
+      e.target.value = "";
+      if (!s) { ui.pending = null; $("#bmsg").innerHTML = `<div class="fb no">${raw && raw.v === 2 && raw.pack && raw.pack !== PACK.id ? "That backup is from a different year or theme (" + esc(raw.pack) + "). It cannot be loaded here." : "That file is not a WL AP Research backup."}</div>`; return; }
+      ui.pending = s;
+      $("#bmsg").innerHTML = `<div class="fb mid" tabindex="-1" id="bask"><b>Replace what is on this device?</b> The backup was saved ${s.at ? "on " + new Date(s.at).toLocaleString() : "at an unknown time"}. Everything typed on this device now will be replaced by it.<div class="row" style="margin-top:8px"><button class="primary" data-act="restoreyes">Yes, load the backup</button><button data-act="restoreno">Cancel</button></div></div>`;
+      $("#bask").focus();
+    };
+    rd.readAsText(f);
+  });
+};
+
+/* ============================ actions ============================ */
+const act = {
+  print() { delete document.body.dataset.print; window.print(); },
+  printppr() { printOnly(`<h1>My PPR draft</h1><p class="muted small">Practice copy. The real PPR is typed into the AP Digital Portfolio.</p>` + PPR_BOXES.map(b => `<div><b>${b[1]}</b><div class="printval" lang="${LC()}">${esc(F("ppr." + b[0]))}</div></div>`).join("")); },
+  printcards() { let h = ""; for (let i = 0; i < P().nCards; i++) h += cardSummary(i); printOnly(`<h1>My source cards</h1>` + (h || `<p>No source cards filled in yet.</p>`)); },
+  menu() { const t = $(".top"), open = !t.classList.contains("open"); t.classList.toggle("open", open); $("#menubtn").setAttribute("aria-expanded", open); },
+  mode(el) {
+    let m = el.dataset.a; if (m === "back") m = ui.prevMode || "practice";
+    if (m === root.mode || (m === "real" && !hasReal())) return; stopAll();
+    if (m === "example") enterExample(); else if (isExample()) { leaveExample(m); } else root.mode = m;
+    ui.pickMsg = null; ui.confirmGoal = ui.confirmCard = false; commit(); render(true); },
+  restoreyes() { if (!ui.pending) return; root = ui.pending; ui.pending = null; if (root.mode === "real" && !hasReal()) root.mode = "practice"; commit(); render(); const m = $("#bmsg"); if (m) m.innerHTML = `<div class="fb ok">Backup loaded.</div>`; },
+  restoreno() { ui.pending = null; const m = $("#bmsg"); if (m) m.innerHTML = ""; },
+  card(el) { const c = CARDS[ui.cards[ui.card]]; ui.cardDone = el.dataset.a; if (ui.cardDone === c.a) ui.score++; render(true); },
+  cardnext() { ui.card++; if (ui.card >= CARDS.length) { ui.card = 0; ui.score = 0; ui.cards = shuffle(ui.cards); } ui.cardDone = null; render(true); },
+  yn(el) { ui.ynDone = el.dataset.a === "1"; render(true); },
+  ynnext() { ui.yn++; if (ui.yn >= YESNO.length) { ui.yn = 0; ui.yns = shuffle(ui.yns); } ui.ynDone = null; render(true); },
+  tab(el) { ui.tab = el.dataset.a; render(true); },
+  fake(el) { ui.fake = Math.max(0, Math.min(FAKES.length - 1, ui.fake + +el.dataset.a)); ui.verdict = null; render(true); },
+  verdict(el) { ui.verdict = el.dataset.a; const ch = $$("#app .chk input").map(c => c.checked); render(true); $$("#app .chk input").forEach((c, i) => c.checked = ch[i]); },
+  cardsel(el) { P().cur = +el.dataset.a; ui.confirmCard = false; save(); render(true); },
+  cardadd() { P().nCards++; P().cur = P().nCards - 1; save(); render(); },
+  carddel() {
+    if (!ui.confirmCard) { ui.confirmCard = true; return render(true); }
+    const i = P().cur, n = P().nCards, nf = {};
+    Object.keys(P().f).forEach(k => { const m = k.match(/^c(\d+)\.(.+)$/); if (!m) { nf[k] = P().f[k]; return; } const j = +m[1]; if (j < i) nf[k] = P().f[k]; else if (j > i) nf[`c${j - 1}.${m[2]}`] = P().f[k]; });
+    P().f = nf; P().nCards = n - 1; P().cur = Math.max(0, i - 1); ui.confirmCard = false; save(); render();
+  },
+  cardfx(el) { const k = `c${P().cur}.fx`, a = (P().f[k] || []).slice(), id = +el.dataset.a, j = a.indexOf(id); if (j < 0) a.push(id); else a.splice(j, 1); a.sort(); P().f[k] = a; save(); render(true); },
+  pick(el) { const id = +el.dataset.a, pk = P().pick = picks(), j = pk.indexOf(id); ui.pickMsg = null; if (j >= 0) pk.splice(j, 1); else if (pk.length < 3) pk.push(id); else ui.pickMsg = "You already have three factors. Tap one of your three to take it off, then choose the new one."; save(); render(true); },
+  goaladd() { ui.confirmGoal = false; if (P().nGoals < 5) P().nGoals++; save(); render(true); },
+  goaldel() { const n = P().nGoals - 1; if (n < 3) return; if ((F("g" + n + ".goal") + F("g" + n + ".when")).trim() && !ui.confirmGoal) { ui.confirmGoal = true; return render(true); } ui.confirmGoal = false; P().nGoals = n; delete P().f["g" + n + ".goal"]; delete P().f["g" + n + ".when"]; save(); render(true); },
+  rehstart() { rehearsal(); },
+  rehskip() { if (run) run.skip = true; },
+  rehstop() { stopAll(); $("#reh").innerHTML = rehIdle(); },
+  qastart() { primeVoice(); qaSet(); },
+  qastop() { stopAll(); $("#sim").innerHTML = simIdle(`<div class="fb mid">Set stopped. Nothing from it was kept in “My last set”.</div>`); },
+  async voicetest() {
+    const tq = F("me.qsrc") === "teacher", code = tq && hasLang() ? LC() : "en-US", txt = tq && hasLang() ? LVOICE[F("me.lang")] : "Hello. This is the simulator voice.";
+    const ok = await speak(txt, null, code); if (!ok) $("#voicemsg").innerHTML = (tq ? voiceMsg() : "") || `<div class="note">This device has no voice for that language, or it did not play.</div>`; },
+  async recdel(el) { if (el.dataset.sure) { await recDel(+el.dataset.id); render(true); } else { el.dataset.sure = "1"; el.textContent = "Press again to delete"; } },
+  srcplay(el) {
+    const s = (PR().packet || []).find(x => x.n === +el.dataset.a); if (!s) return;
+    stopAll(); primeVoice(); const r = run = { cancelled: false }; wakeOn();
+    const parts = s.body.reduce((a, p) => a.concat(sentences(p.replace(/^[A-Za-zÀ-ÿ]+:\s*/, ""))), []), say = t => { const st = $("#srcst" + s.n); if (st) st.textContent = t; };
+    (async () => {
+      for (let i = 0; i < parts.length; i++) {
+        if (r.cancelled) return; say(`Playing · sentence ${i + 1} of ${parts.length}`);
+        const ok = await speak(parts[i], r); if (r.cancelled) return;
+        if (!ok) { say("No voice for this language on this device. Use “Show the script”, or ask your teacher to read it aloud."); break; }
+        if (i === parts.length - 1) say("Finished."); else await wait(250, r);
+      }
+      if (run === r) { run = null; wakeOff(); }
+    })();
+  },
+  srcstop() { stopAll(); $$("[id^=srcst]").forEach(e => { e.textContent = ""; }); },
+  srcshow(el) { const n = +el.dataset.a; ui.shown[n] = !ui.shown[n]; render(true); },
+  backup() { saveNow(); const who = F("me.name").trim().replace(/[^A-Za-zÀ-ÿ0-9]+/g, "-").replace(/^-|-$/g, ""), b = new Blob([JSON.stringify(root, null, 1)], { type: "application/json" }), u = URL.createObjectURL(b), a = document.createElement("a"); a.href = u; a.download = "wl-ap-backup-" + (who ? who + "-" : "") + new Date().toISOString().slice(0, 10) + ".json"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 2000); const m = $("#bmsg"); if (m) m.innerHTML = `<div class="fb ok">Backup downloaded. Move it to your Google Drive.</div>`; },
+  async erase() { if (!ui.confirmErase) { ui.confirmErase = true; return render(true); } stopAll(); root = blankRoot(); commit(); await recClear(); ui.confirmErase = false; render(); }
+};
+/* After a button redraws the page, put the keyboard focus back where the student is working. */
+let focusKey = null;
+const fkey = b => b.dataset.act + "|" + (b.dataset.a || "") + "|" + (b.dataset.id || "");
+function restoreFocus() {
+  const fk = focusKey; focusKey = null; if (!fk) return;
+  const cur = document.activeElement; if (cur && cur !== document.body && document.body.contains(cur)) return;
+  const btns = $$("[data-act]").filter(b => !b.disabled);
+  const t = (fk.g && $(`[data-focus="${fk.g}"]`)) || btns.find(b => fkey(b) === fk.k) || btns.find(b => b.dataset.act === fk.k.split("|")[0]);
+  if (t) t.focus({ preventScroll: true });
+}
+function toggleFold(h) { const p = h.parentElement, open = !p.classList.contains("open"); p.classList.toggle("open", open); h.setAttribute("aria-expanded", open); ui.fold[p.dataset.fold] = open; }
+function closeMenu() { $(".top").classList.remove("open"); $("#menubtn").setAttribute("aria-expanded", "false"); }
+document.addEventListener("click", e => {
+  const fh = e.target.closest(".foldhead");
+  if (fh && !e.target.closest("button,a,input,select,textarea,label")) { toggleFold(fh); return; }
+  const el = e.target.closest("[data-act]");
+  if (el && act[el.dataset.act]) { e.preventDefault(); focusKey = { k: fkey(el), g: el.dataset.fg || "" }; act[el.dataset.act](el); restoreFocus(); }
+  else if (!e.target.closest(".top")) closeMenu();
+});
+document.addEventListener("keydown", e => {
+  const t = e.target, go = e.key === "Enter" || e.key === " ";
+  if (e.key === "Escape") closeMenu();
+  if (go && t.matches && t.matches(".foldhead")) { e.preventDefault(); toggleFold(t); }
+  if (go && t.matches && t.matches("label.btn[for]")) { e.preventDefault(); const i = document.getElementById(t.htmlFor); if (i) i.click(); }
+});
+document.addEventListener("input", e => {
+  const el = e.target, k = el.dataset && el.dataset.k; if (!k) return;
+  bag(k)[k] = el.type === "checkbox" ? el.checked : el.value; save();
+  if (k.startsWith("ppr.")) { const id = k.slice(4), c = pprCheck(el.value), cn = $("#cnt-" + id); cn.textContent = c.n + "/" + PPR_LIMIT; cn.classList.toggle("over", c.n > PPR_LIMIT); $("#msg-" + id).textContent = c.m; }
+  if (k.startsWith("ps.")) $("#tot-ps").textContent = total(RUBRIC_PRES, "ps") + " / 11";
+  if (k.startsWith("qs.")) $("#tot-qs").textContent = total(RUBRIC_QA, "qs") + " / 9";
+  if (k === "dove.kw") $("#queries").innerHTML = doveQueries();
+  if (k === "me.name") printHead();
+  if (k === "me.lang" || k === "me.qsrc") { commit(); const id = "f-" + k; if (k === "me.qsrc" && $("#sim")) $("#sim").innerHTML = simIdle(); else render(true); const n = document.getElementById(id); if (n) n.focus(); }
+});
+
+
+/* ============================ worked example: static panels ============================ */
+function exampleFix(id) {
+  const esc2 = esc, E = EXAMPLE;
+  const why = sec => E.scores.filter(r => r[0] === sec).map(r => `<tr><td>${esc2(r[1])}</td><td>${esc2(r[2])}</td><td>${esc2(r[3])}</td></tr>`).join("");
+  const whyPanel = (sec, pts) => `<div class="panel exrow"><h2>Why these scores · ${sec}</h2><p class="muted small">An estimate from the written text, about ${pts}. Delivery and fluency cannot be judged on paper.</p><div class="tablewrap"><table><tr><th>Row</th><th>Points</th><th>Why</th></tr>${why(sec)}</table></div></div>`;
+  const before = html => { const f = $(".navfoot"); if (f) f.insertAdjacentHTML("beforebegin", html); else app.insertAdjacentHTML("beforeend", html); };
+  if (id === "ppr") {
+    const r = $("#reh"); if (r) r.innerHTML = `<h2>The model presentation</h2><p class="muted small">About 390 words, three minutes at a steady learner's pace. On exam day she has three minutes to prepare and three to speak, with only the prompt and her PPR in front of her. If she memorized and recited this, delivery would drop to 0.</p>${E.presentation.map(p => `<p lang="en">${esc2(p)}</p>`).join("")}`;
+    const rc = $("#recs-pres"); if (rc) rc.innerHTML = `<p class="muted small">No recordings in the example.</p>`;
+    before(whyPanel("Presentation", "9 of 11"));
+  }
+  if (id === "qa") {
+    const s = $("#sim"); if (s) s.innerHTML = `<h2>The model Q&amp;A</h2><p class="muted small">Four recorded questions she has never seen. Each plays twice and she has 40 seconds. Each answer does three things: it answers, it gives an example, and it gives a reason or a comparison.</p>${E.qa.map((q, i) => `<div class="stack" style="gap:4px"><h3 lang="en">${i + 1}. ${esc2(q.q)}</h3><p class="muted small">${esc2(q.kind)}</p><p lang="en">${esc2(q.a)}</p></div>`).join("")}`;
+    const rv = $("#review"); if (rv) rv.remove();
+    before(whyPanel("Q&A", "7 of 9"));
+  }
+  if (id === "scheda") {
+    before(`<div class="panel exrow"><h2>All twelve sources she used</h2><p class="muted small">Five interviews, six texts and one industry report. A source is any real material she learned a fact from and can name out loud. She wrote one card per source; the card above is the first.</p><div class="tablewrap"><table><tr><th>Source</th><th>Kind</th><th>What she took from it</th><th>How far to trust it</th></tr>${E.sources.map(r => `<tr>${r.map(c => `<td>${esc2(c)}</td>`).join("")}</tr>`).join("")}</table></div></div>`);
+  }
+}
+
+/* ============================ router ============================ */
+let current = null, wasEx = false;
+const mqPhone = window.matchMedia("(max-width:700px)");
+const FOLD_PAGES = ["scheda", "piano", "ppr", "qa", "pacchetto"];
+function route() { const id = location.hash.replace(/^#/, ""); return ROUTES.some(r => r.id === id) ? id : "start"; }
+function printHead() {
+  const r = ROUTES.find(x => x.id === route()), name = F("me.name").trim();
+  $("#printhead").innerHTML = `<div><b>WL AP Research · ${esc(PACK.themeName)}</b> · ${r.title}${hasReal() || isExample() ? " · " + modeLabel().toLowerCase() : ""}</div><div>Name: ${name ? `<b>${esc(name)}</b>` : "________________________________"} &nbsp;·&nbsp; Printed: ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</div>`;
+}
+function printOnly(html) { $("#printonly").innerHTML = html; document.body.dataset.print = "only"; printHead(); window.print(); }
+/* Phone: long pages become a list of sections that open and close. */
+function foldify(id) {
+  if (!mqPhone.matches || !FOLD_PAGES.includes(id)) return;
+  let n = 0;
+  $$(".panel", app).forEach(p => {
+    if (p.hasAttribute("data-nofold") || p.tagName === "A" || p.parentElement.closest(".panel")) return;
+    const h = p.firstElementChild; if (!h || !(h.tagName === "H2" || (h.classList.contains("row") && $("h2", h)))) return;
+    const key = id + ":" + n, open = ui.fold[key] != null ? ui.fold[key] : n === 0; n++;
+    p.classList.add("fold"); p.classList.toggle("open", open); p.dataset.fold = key;
+    h.classList.add("foldhead"); h.tabIndex = 0; h.setAttribute("role", "button"); h.setAttribute("aria-expanded", open);
+  });
+}
+function render(keepScroll) {
+  const id = route(), y = window.scrollY, r = ROUTES.find(x => x.id === id);
+  if (id !== current) { stopAll(); ui.confirmCard = ui.confirmErase = ui.confirmGoal = false; ui.pickMsg = null; ui.pending = null; }
+  let last = null;
+  $("#nav").innerHTML = ROUTES.map(r => { const g = r.grp !== last ? `<span class="grp">${r.grp}</span>` : ""; last = r.grp; return `${g}<a href="#${r.id}" class="${r.id === id ? "on" : ""}" ${r.id === id ? 'aria-current="page"' : ""}>${r.nav}</a>`; }).join("");
+  closeMenu(); printHead();
+  const mp = $("#modepill"); mp.hidden = !(hasReal() || isExample()); mp.textContent = modeLabel();
+  if (isExample()) { setStatus("ex"); wasEx = true; } else if (wasEx) { wasEx = false; setStatus(storageOK ? "ok" : "bad"); }
+  document.body.classList.toggle("example", isExample());
+  const eb = $("#exbar"); eb.hidden = !isExample();
+  if (keepScroll && run && (id === "ppr" || id === "qa")) return; /* never redraw over a running timer */
+  urls.forEach(u => URL.revokeObjectURL(u)); urls = [];
+  app.innerHTML = views[id](); fill(); if (after[id]) after[id](); if (isExample()) exampleFix(id); foldify(id);
+  document.title = r.title + " · WL AP Research · " + PACK.themeName;
+  if (keepScroll && id === current) window.scrollTo(0, y);
+  else { window.scrollTo(0, 0); if (current !== null) { const h = $("h1", app); if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }); } } }
+  current = id;
+}
+window.addEventListener("hashchange", () => render());
+if (mqPhone.addEventListener) mqPhone.addEventListener("change", () => render(true)); else if (mqPhone.addListener) mqPhone.addListener(() => render(true));
+window.addEventListener("beforeprint", () => {
+  printHead();
+  $$("details", app).forEach(d => { d.dataset.was = d.open ? "1" : ""; d.open = true; });
+  $$("textarea, input[type=text], select", app).forEach(el => { const d = document.createElement("div"); d.className = "printval" + (el.tagName === "TEXTAREA" ? " big" : ""); d.lang = LC(); d.textContent = el.value; el.after(d); });
+});
+window.addEventListener("afterprint", () => {
+  $$(".printval", app).forEach(d => d.remove()); $$("details", app).forEach(d => { d.open = d.dataset.was === "1"; });
+  delete document.body.dataset.print; $("#printonly").innerHTML = "";
+});
+$(".brand").textContent = "WL AP Research · " + PACK.themeName;
+if (/[?&]example(=|&|$)/.test(location.search)) enterExample();
+setStatus(storageOK ? "ok" : "bad"); alertBar(); render();
+try { console.info("WL AP Research " + APP_VERSION + " · created by " + MADE_BY + " · © 2026 " + MADE_BY); } catch (e) { }
+</script>
+</body>
+</html>
