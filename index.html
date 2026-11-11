@@ -69,6 +69,9 @@ main{max-width:1240px;margin:0 auto;padding:24px 20px 40px}
 .nextcard .meter{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin:10px 0 6px}
 .nextcard .meter i{display:block;height:100%;background:var(--accent);border-radius:99px}
 .nextcard .btn{margin-top:6px}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:6px 0;min-height:44px}
+.chk input{margin-top:4px}
+.logrow{margin:10px 0}
 .panel.key{border:2px solid var(--accent)}
 .stack{display:flex;flex-direction:column;gap:14px;min-width:0}
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
@@ -418,6 +421,7 @@ const ROUTES = [
   { id: "dove", grp: "Skills", nav: "2 Where to look", title: "Where to look" },
   { id: "fidarsi", grp: "Skills", nav: "3 Trust it?", title: "Can I trust it?" },
   { id: "scheda", grp: "Skills", nav: "4 Source card", title: "Source card and citing" },
+  { id: "ricerca", grp: "Skills", nav: "5 Research drills", title: "Research drills" },
   { id: "piano", grp: "My project", nav: "Research plan", title: "Research plan" },
   { id: "ppr", grp: "My project", nav: "PPR", title: "PPR and presentation" },
   { id: "qa", grp: "My project", nav: "Q&amp;A", title: "Q&A simulator" },
@@ -704,7 +708,7 @@ window.addEventListener("storage", e => {
   document.body.appendChild(d);
   const b = $("#lockreload"); b.addEventListener("click", () => location.reload()); b.focus();
 });
-const ui = { cards: shuffle(CARDS.map((_, i) => i)), yns: shuffle(YESNO.map((_, i) => i)), card: 0, cardDone: null, score: 0, yn: 0, ynDone: null, tab: "read", fake: 0, verdict: null, shown: {}, fold: {} };
+const ui = { cards: shuffle(CARDS.map((_, i) => i)), yns: shuffle(YESNO.map((_, i) => i)), card: 0, cardDone: null, score: 0, yn: 0, ynDone: null, tab: "read", fake: 0, verdict: null, shown: {}, fold: {}, srch: 0, srchOpen: false, pv: 0, pvPick: null, pvOrder: null };
 
 function ta(k, label, opt) {
   opt = opt || {};
@@ -872,13 +876,13 @@ async function pruneQA(keep) {
 /* ============================ views ============================ */
 const views = {}, after = {};
 
-const STEP_IDS = ["trep", "dove", "fidarsi", "scheda", "piano", "ppr", "qa"];
-const STEP_WHY = { trep: "Learn to tell products, practices and perspectives apart. Worth 2 points in both speaking tasks.", dove: "Practice finding sources in your language.", fidarsi: "Practice judging whether a source is worth using.", scheda: "Practice recording a source and citing it.", piano: "Choose your factors and plan your research.", ppr: "Write your key words and rehearse the presentation.", qa: "Practice answering four questions you have not seen." };
+const STEP_IDS = ["trep", "dove", "fidarsi", "scheda", "ricerca", "piano", "ppr", "qa"];
+const STEP_WHY = { trep: "Learn to tell products, practices and perspectives apart. Worth 2 points in both speaking tasks.", dove: "Practice finding sources in your language.", fidarsi: "Practice judging whether a source is worth using.", scheda: "Practice recording a source and citing it.", ricerca: "Fix a weak search, test what a source really proves, and keep a log of your sources.", piano: "Choose your factors and plan your research.", ppr: "Write your key words and rehearse the presentation.", qa: "Practice answering four questions you have not seen." };
 function nextCard() {
   if (isExample()) return "";
   const seen = (F("me.seen") || "").split(",").filter(Boolean), done = STEP_IDS.filter(i => seen.indexOf(i) >= 0).length;
   const nx = STEP_IDS.find(i => seen.indexOf(i) < 0), r = nx && ROUTES.find(x => x.id === nx);
-  return `<div class="panel nextcard noprint" data-nofold><div class="muted small"><b>Your next step</b></div>${r ? `<h2>${esc(r.title)}</h2><p>${STEP_WHY[nx]}</p><a class="btn primary" href="#${nx}">${done ? "Continue" : "Start"}: ${esc(r.title)}</a>` : `<h2>All seven steps opened</h2><p>Go back to any step to practice again, or print your work.</p><a class="btn primary" href="#lavoro">Save and print my work</a>`}<div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="7" aria-valuenow="${done}" aria-label="Steps opened"><i style="width:${Math.round(done / 7 * 100)}%"></i></div><div class="muted small">${done} of 7 steps opened. This counts screens you have opened, not what you have mastered.</div></div>`;
+  return `<div class="panel nextcard noprint" data-nofold><div class="muted small"><b>Your next step</b></div>${r ? `<h2>${esc(r.title)}</h2><p>${STEP_WHY[nx]}</p><a class="btn primary" href="#${nx}">${done ? "Continue" : "Start"}: ${esc(r.title)}</a>` : `<h2>All ${STEP_IDS.length} steps opened</h2><p>Go back to any step to practice again, or print your work.</p><a class="btn primary" href="#lavoro">Save and print my work</a>`}<div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="${STEP_IDS.length}" aria-valuenow="${done}" aria-label="Steps opened"><i style="width:${Math.round(done / STEP_IDS.length * 100)}%"></i></div><div class="muted small">${done} of ${STEP_IDS.length} steps opened. This counts screens you have opened, not what you have mastered.</div></div>`;
 }
 views.start = () => `
 ${head("Start", "What does the exam ask of me?", "Your project is the two blue boxes: 35% of your score.")}
@@ -893,7 +897,7 @@ ${modeSwitch()}
   <div style="flex:25"><b>Reading</b><br>25% · 30 questions</div>
 </div>
 <div class="grid2">
-  <a class="panel" href="#trep" style="text-decoration:none;color:inherit"><h2>Skills · start now</h2><p>The three P's · Where to look · Can I trust it? · Source card and citing</p></a>
+  <a class="panel" href="#trep" style="text-decoration:none;color:inherit"><h2>Skills · start now</h2><p>The three P's · Where to look · Can I trust it? · Source card and citing · Research drills</p></a>
   <a class="panel" href="#piano" style="text-decoration:none;color:inherit"><h2>My project · ${isExample() ? "worked example" : isPractice() ? (hasReal() ? "practice prompt" : "practice now, real prompt in " + PACK.dates.packet) : "real project"}</h2><p>Research plan · PPR and rehearsal · Q&amp;A simulator</p></a>
 </div>
 <div class="grid2">
@@ -922,7 +926,7 @@ function rubricRows(rb) {
 views.trep = () => {
   const c = CARDS[ui.cards[ui.card]], y = YESNO[ui.yns[ui.yn]];
   return `
-${head("Skills 1 of 4", "Products, practices, perspectives", "Linking a product or practice to a perspective is worth 2 points in both speaking tasks.")}
+${head("Skills 1 of 5", "Products, practices, perspectives", "Linking a product or practice to a perspective is worth 2 points in both speaking tasks.")}
 <div class="grid3">
   <div class="panel"><h2>Product</h2><p>What a culture makes. It can be an object or something you cannot touch, such as a law or a TV programme.</p><div class="itbox">a loaf of bread from the corner bakery</div></div>
   <div class="panel"><h2>Practice</h2><p>What people do: habits, rituals, ways of behaving.</p><div class="itbox">buying it fresh every morning and chatting with the baker</div></div>
@@ -960,7 +964,7 @@ function doveQueries() {
     `<div class="row">${go("https://www.youtube.com/results?search_query=" + encodeURIComponent(kw), "Search YouTube with my words")}</div>`;
 }
 views.dove = () => `
-${head("Skills 2 of 4", "Where do I find sources in " + LN() + "?", "Places to search, not ready-made answers. Each one is labeled so you know whether it opens on a school Chromebook.")}
+${head("Skills 2 of 5", "Where do I find sources in " + LN() + "?", "Places to search, not ready-made answers. Each one is labeled so you know whether it opens on a school Chromebook.")}
 <div class="tabs noprint" role="tablist">${[["read", "Read"], ["listen", "Listen and watch"], ["data", "Data and charts"]].map(t => `<button role="tab" aria-selected="${ui.tab === t[0]}" data-act="tab" data-a="${t[0]}" class="${ui.tab === t[0] ? "sel" : ""}">${t[1]}</button>`).join("")}</div>
 <div class="grid2">
   <div class="panel"><div>${PACK.themeSites.filter(s => s.cat === ui.tab).concat(SITES[ui.tab]).map(s => { const l = PACK.siteLabels[s.k] || "untested"; return `<div class="site"><div><a href="${s.url}" target="_blank" rel="noopener"><b>${esc(s.name)}</b></a><br><span class="small">${esc(s.d)}</span></div><span class="pill ${l}">${SITE_LABEL[l]}</span></div>`; }).join("")}</div>
@@ -979,7 +983,7 @@ ${foot("dove", "")}`;
 views.fidarsi = () => {
   const p = FAKES[ui.fake], v = ui.verdict, names = { use: "Use it", care: "Use with care", drop: "Drop it" };
   return `
-${head("Skills 3 of 4", "Can I trust this source?", "Five questions for every source. The first one sends you off the page: what others say about a site tells you more than the site says about itself.")}
+${head("Skills 3 of 5", "Can I trust this source?", "Five questions for every source. The first one sends you off the page: what others say about a site tells you more than the site says about itself.")}
 <div class="grid2">
   <div class="stack"><div class="row between"><h2>Practice source ${ui.fake + 1} of ${FAKES.length}</h2><span class="pill">invented for this exercise</span></div>
     <div class="fake" lang="en"><div class="url">${esc(p.url)}</div><div class="pg"><div class="site-name">${esc(p.site)}</div><h3>${esc(p.title)}</h3><div class="by">${esc(p.by)}</div>${p.body.map(b => `<p>${esc(b)}</p>`).join("")}</div></div>
@@ -996,10 +1000,95 @@ ${head("Skills 3 of 4", "Can I trust this source?", "Five questions for every so
 ${foot("fidarsi", "")}`;
 };
 
+
+/* ===== Research drills: invented, generic practice material. None names a topic, community or real source. ===== */
+const SEARCHES = [
+  { goal: "You need to find out how people in one region learn their traditional songs.", weak: "music", why: "Too wide: millions of results, none about learning or one region." },
+  { goal: "You want a recent interview with someone who plays a traditional instrument.", weak: "instrument", why: "No place, no language, and it does not say you want an interview." },
+  { goal: "You need figures on how many young people attend local festivals.", weak: "festivals popular", why: "Opinion words, no place, and nothing that asks for data or a survey." },
+  { goal: "You want the history of one local celebration.", weak: "celebration history", why: "No place and no name. The search engine has to guess which celebration." },
+  { goal: "You need an official page from a town or region about its cultural events.", weak: "events", why: "It will return ticket sites and ads, not the official body." }
+];
+const SEARCH_CHECK = [
+  "It names a place or a community, not only a general subject.",
+  "It names the kind of source you want: interview, data, history, report, official page.",
+  "It is written in the language you study (or switches to it if the first results are English).",
+  "It names one specific thing: an instrument, an event, a practice.",
+  "If it fails, you know which single word you would change next."
+];
+const PROVES = [
+  { src: "A town's tourist office page, dated this year: \"Our spring festival draws about 5,000 visitors. Local bands play in the main square for three evenings.\"",
+    o: [{ t: "The festival has existed for centuries.", ok: 0, why: "Overreach. The page gives a number of visitors this year, not the festival's age." },
+        { t: "Around 5,000 people visit this festival, and bands play in the square.", ok: 1, why: "Supported. It says exactly this. Note who says it: a tourist office wants visitors." },
+        { t: "Young people no longer care about the festival.", ok: 0, why: "Unrelated. The page says nothing about young people." }] },
+  { src: "A personal blog, no date: \"Everybody here knows the old songs. My grandmother taught me every one of them.\"",
+    o: [{ t: "Everyone in the region knows the old songs.", ok: 0, why: "Overreach. One person's experience does not prove \"everybody\"." },
+        { t: "One person in this region was taught old songs by a grandmother.", ok: 1, why: "Supported, and no more than that. It shows one family practice, not the whole community." },
+        { t: "Schools teach the old songs.", ok: 0, why: "Unrelated. The post mentions a grandmother, not schools." }] },
+  { src: "A national statistics office table, 2024: share of people aged 15 to 24 who attended a live music event in the past year: 38%.",
+    o: [{ t: "38% of young people attended a live music event that year.", ok: 1, why: "Supported. Dated, official, and it says what it measured." },
+        { t: "Young people prefer live music to recorded music.", ok: 0, why: "Overreach. Attendance does not show a preference." },
+        { t: "38% of all people attended a live music event.", ok: 0, why: "Wrong group. The figure is only for ages 15 to 24." }] },
+  { src: "A newspaper article, last month, quoting a music-school director: \"Enrolment in traditional-music classes has doubled in five years.\"",
+    o: [{ t: "Enrolment in traditional-music classes doubled, according to a school director.", ok: 1, why: "Supported, and the wording keeps who said it. It is one school's view, so look for a second source." },
+        { t: "Traditional music is now more popular than modern music.", ok: 0, why: "Overreach. A rise in one kind of class does not show it beats anything else." },
+        { t: "Traditional music is dying out.", ok: 0, why: "Contradicted. The quote says enrolment doubled." }] }
+];
+function drillSearch() {
+  const i = ui.srch % SEARCHES.length, sc = SEARCHES[i];
+  return `<div class="panel" data-nofold><div class="row between"><h2>Drill 1 · Fix the search</h2><span class="muted small">${i + 1} of ${SEARCHES.length}</span></div>
+  <p><b>Goal:</b> ${sc.goal}</p>
+  <div class="itbox"><b>A student searched:</b> “${esc(sc.weak)}”</div>
+  <label class="f">Write a better search${hasLang() ? " in " + esc(LN()) : ""}.<input type="text" data-k="ric.q${i}" id="f-ric.q${i}" lang="${LC()}" autocomplete="off"></label>
+  ${ui.srchOpen ? `<div class="fb ok"><b>Why the first search failed:</b> ${sc.why}</div><p><b>Check your own search.</b> Tick what is true:</p>${SEARCH_CHECK.map((t, j) => `<label class="chk"><input type="checkbox" data-nostore> ${t}</label>`).join("")}<p class="muted small">Try your search on the open web. If the first results are weak, change one word and try again. Searching is repeating, not guessing once.</p>` : ""}
+  <div class="row"><button class="primary" data-act="srchcheck" ${ui.srchOpen ? "disabled" : ""}>Check my search</button><button data-act="srchnext">Next scenario</button></div></div>`;
+}
+function drillProves() {
+  const i = ui.pv % PROVES.length, q = PROVES[i];
+  if (!ui.pvOrder || ui.pvOrder.length !== q.o.length || ui.pvOrder.i !== i) { ui.pvOrder = shuffle(q.o.map((_, j) => j)); ui.pvOrder.i = i; }
+  return `<div class="panel" data-nofold><div class="row between"><h2>Drill 2 · What does it prove?</h2><span class="muted small">${i + 1} of ${PROVES.length}</span></div>
+  <div class="itbox">${esc(q.src)}</div><p>Which sentence can you safely say after reading this source?</p>
+  <div class="row" style="flex-direction:column;align-items:stretch">${ui.pvOrder.map(j => `<button data-act="pvpick" data-a="${j}" ${ui.pvPick != null ? "disabled" : ""} class="${ui.pvPick === j ? "sel" : ""}" style="text-align:left">${esc(q.o[j].t)}</button>`).join("")}</div>
+  ${ui.pvPick != null ? `<div class="fb ${q.o[ui.pvPick].ok ? "ok" : "no"}"><b>${q.o[ui.pvPick].ok ? "Right." : "Not quite."}</b> ${esc(q.o[ui.pvPick].why)}${q.o[ui.pvPick].ok ? "" : " The safe sentence: " + esc(q.o.find(o => o.ok).t)}</div><div class="row"><button class="primary" data-act="pvnext">Next source</button></div>` : ""}
+  <p class="muted small">In the Q&amp;A, finish this sentence about your own sources: “This shows ___, but it does not show ___.”</p></div>`;
+}
+function logRows() { try { const a = JSON.parse(F("me.log") || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+function logGaps(rows) {
+  if (!rows.length) return "Add your first source to see how well your research covers the factors.";
+  const m = [], fac = new Set(rows.map(r => r.f).filter(Boolean)), pf = PACK.practice.factors;
+  const persp = pf.filter(f => f.group === "persp").map(f => String(f.id));
+  if (rows.some(r => !r.d)) m.push("Some sources have no date. A source with no date is hard to trust.");
+  if (rows.length >= 3 && fac.size < 2) m.push("Your sources support only one factor. The task needs three.");
+  if (!persp.some(x => fac.has(x))) m.push("No source supports a perspective factor yet. At least one must.");
+  if (rows.filter(r => r.t === "use" || r.t === "care").length < 3) m.push("Fewer than three sources you would use. Keep looking.");
+  if (rows.some(r => !r.x)) m.push("Some sources have no usable fact written down.");
+  return m.length ? m.map(t => "• " + t).join("<br>") : "No obvious gaps. Now check that every factor you will present has at least one trustworthy source.";
+}
+function drillLog() {
+  if (isExample()) return `<div class="panel" data-nofold><h2>Drill 3 · Source log</h2><p class="muted">The log is for your own research. Leave the worked example to use it.</p></div>`;
+  const rows = logRows(), pf = PACK.practice.factors;
+  return `<div class="panel" data-nofold><h2>Drill 3 · My source log</h2><p class="muted small">Write each source as you find it. Fill the boxes in ${hasLang() ? esc(LN()) : "your target language"}. This is your own list of your own sources: the app never supplies sources.</p>
+  ${rows.map((r, i) => `<div class="itbox logrow"><div class="row"><b>Source ${i + 1}</b><button data-act="logdel" data-a="${i}" aria-label="Remove source ${i + 1}">Remove</button></div>
+    <label class="f">Title or link<input type="text" data-log="${i}.s" value="${esc(r.s || "")}" lang="${LC()}"></label>
+    <label class="f">Who made it<input type="text" data-log="${i}.w" value="${esc(r.w || "")}" lang="${LC()}"></label>
+    <label class="f">Date<input type="text" data-log="${i}.d" value="${esc(r.d || "")}"></label>
+    <label class="f">One fact I can use<textarea data-log="${i}.x" lang="${LC()}">${esc(r.x || "")}</textarea></label>
+    <label class="f">Factor it supports<select data-log="${i}.f"><option value="">Choose…</option>${pf.map(f => `<option value="${f.id}" ${String(r.f) === String(f.id) ? "selected" : ""}>${f.id}. ${esc(f.name)}</option>`).join("")}</select></label>
+    <label class="f">My trust rating<select data-log="${i}.t"><option value="">Choose…</option><option value="use" ${r.t === "use" ? "selected" : ""}>Use it</option><option value="care" ${r.t === "care" ? "selected" : ""}>Use with care</option><option value="drop" ${r.t === "drop" ? "selected" : ""}>Drop it</option></select></label></div>`).join("")}
+  <div class="row"><button class="primary" data-act="logadd">Add a source</button></div>
+  <div class="panel soft" id="loggaps" aria-live="polite"><b>Gap check</b><br>${logGaps(rows)}</div></div>`;
+}
+views.ricerca = () => `
+${head("Skills 5 of 5", "Research drills", "Short practice on the moves a researcher makes. Everything here is invented practice material. You still choose your own topic and find your own sources.")}
+${drillSearch()}
+${drillProves()}
+${drillLog()}
+${foot("ricerca")}`;
+
 views.scheda = () => {
   const i = Math.min(P().cur, P().nCards - 1), k = n => `c${i}.${n}`, fx = P().f[k("fx")] || [];
   return `
-${head("Skills 4 of 4", "One card for every source", "The same boxes as College Board's organizer (the Source Material Graphic Organizer). Use it for packet sources and for the ones you find yourself.")}
+${head("Skills 4 of 5", "One card for every source", "The same boxes as College Board's organizer (the Source Material Graphic Organizer). Use it for packet sources and for the ones you find yourself.")}
 <div class="row between noprint"><div class="row">${Array.from({ length: P().nCards }, (_, n) => `<button data-act="cardsel" data-a="${n}" class="${n === i ? "sel" : ""}">Card ${n + 1}</button>`).join("")}<button data-act="cardadd">+ New card</button><button data-act="printcards">Print all my cards</button></div>${P().nCards > 1 ? `<button class="quiet danger" data-act="carddel">${ui.confirmCard ? "Press again to delete this card" : "Delete this card"}</button>` : ""}</div>
 <div class="grid2">
   <div class="panel"><h2>About the source · card ${i + 1}</h2>
@@ -1285,6 +1374,12 @@ const act = {
   card(el) { const c = CARDS[ui.cards[ui.card]]; ui.cardDone = el.dataset.a; if (ui.cardDone === c.a) ui.score++; render(true); },
   cardnext() { ui.card++; if (ui.card >= CARDS.length) { ui.card = 0; ui.score = 0; ui.cards = shuffle(ui.cards); } ui.cardDone = null; render(true); },
   yn(el) { ui.ynDone = el.dataset.a === "1"; render(true); },
+  srchcheck() { ui.srchOpen = true; render(true); },
+  srchnext() { ui.srch++; ui.srchOpen = false; render(true); },
+  pvpick(el) { ui.pvPick = +el.dataset.a; render(true); },
+  pvnext() { ui.pv++; ui.pvPick = null; ui.pvOrder = null; render(true); },
+  logadd() { const r = logRows(); r.push({}); bag("me.log")["me.log"] = JSON.stringify(r); commit(); render(true); },
+  logdel(el) { const r = logRows(); r.splice(+el.dataset.a, 1); bag("me.log")["me.log"] = JSON.stringify(r); commit(); render(true); },
   ynnext() { ui.yn++; if (ui.yn >= YESNO.length) { ui.yn = 0; ui.yns = shuffle(ui.yns); } ui.ynDone = null; render(true); },
   tab(el) { ui.tab = el.dataset.a; render(true); },
   fake(el) { ui.fake = Math.max(0, Math.min(FAKES.length - 1, ui.fake + +el.dataset.a)); ui.verdict = null; render(true); },
@@ -1355,6 +1450,8 @@ document.addEventListener("keydown", e => {
   if (go && t.matches && t.matches("label.btn[for]")) { e.preventDefault(); const i = document.getElementById(t.htmlFor); if (i) i.click(); }
 });
 document.addEventListener("input", e => {
+  const lg = e.target.dataset && e.target.dataset.log;
+  if (lg) { const m = lg.split("."), r = logRows(); if (r[+m[0]]) { r[+m[0]][m[1]] = e.target.value; bag("me.log")["me.log"] = JSON.stringify(r); save(); const g = $("#loggaps"); if (g) g.innerHTML = "<b>Gap check</b><br>" + logGaps(r); } return; }
   const el = e.target, k = el.dataset && el.dataset.k; if (!k) return;
   bag(k)[k] = el.type === "checkbox" ? el.checked : el.value; save();
   if (k.startsWith("ppr.")) { const id = k.slice(4), c = pprCheck(el.value), cn = $("#cnt-" + id); cn.textContent = c.label; cn.classList.toggle("over", c.m.indexOf("Over") === 0); $("#msg-" + id).textContent = c.m; }
