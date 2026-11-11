@@ -1075,7 +1075,7 @@ function drillLog() {
     <label class="f">One fact I can use<textarea data-log="${i}.x" lang="${LC()}">${esc(r.x || "")}</textarea></label>
     <label class="f">Factor it supports<select data-log="${i}.f"><option value="">Choose…</option>${pf.map(f => `<option value="${f.id}" ${String(r.f) === String(f.id) ? "selected" : ""}>${f.id}. ${esc(f.name)}</option>`).join("")}</select></label>
     <label class="f">My trust rating<select data-log="${i}.t"><option value="">Choose…</option><option value="use" ${r.t === "use" ? "selected" : ""}>Use it</option><option value="care" ${r.t === "care" ? "selected" : ""}>Use with care</option><option value="drop" ${r.t === "drop" ? "selected" : ""}>Drop it</option></select></label></div>`).join("")}
-  <div class="row"><button class="primary" data-act="logadd">Add a source</button></div>
+  <div class="row"><button class="primary" data-act="logadd">Add a source</button>${rows.length ? `<button data-act="printlog">Print my source log</button>` : ""}</div>
   <div class="panel soft" id="loggaps" aria-live="polite"><b>Gap check</b><br>${logGaps(rows)}</div></div>`;
 }
 views.ricerca = () => `
@@ -1362,6 +1362,8 @@ after.lavoro = () => {
 const act = {
   print() { delete document.body.dataset.print; window.print(); },
   printppr() { printOnly(`<h1>My PPR draft</h1><p class="muted small">Practice copy. The real PPR is typed into the AP Digital Portfolio.</p>` + PPR_BOXES.map(b => `<div><b>${b[1]}</b><div class="printval" lang="${LC()}">${esc(F("ppr." + b[0]))}</div></div>`).join("")); },
+  printlog() { const r = logRows(), fn = id => { const f = PACK.practice.factors.find(x => String(x.id) === String(id)); return f ? f.id + ". " + f.name : "—"; }, tl = { use: "Use it", care: "Use with care", drop: "Drop it" };
+    printOnly(`<h1>My source log</h1>` + (r.length ? r.map((x, i) => `<div style="margin:0 0 14px;break-inside:avoid"><b>Source ${i + 1}</b><div class="printval" lang="${LC()}">${esc(x.s || "")}</div><div>Who: ${esc(x.w || "—")} · Date: ${esc(x.d || "—")}</div><div>Fact I can use:</div><div class="printval big" lang="${LC()}">${esc(x.x || "")}</div><div>Factor: ${esc(fn(x.f))} · My rating: ${tl[x.t] || "—"}</div></div>`).join("") : `<p>No sources logged yet.</p>`)); },
   printcards() { let h = ""; for (let i = 0; i < P().nCards; i++) h += cardSummary(i); printOnly(`<h1>My source cards</h1>` + (h || `<p>No source cards filled in yet.</p>`)); },
   menu() { const t = $(".top"), open = !t.classList.contains("open"); t.classList.toggle("open", open); $("#menubtn").setAttribute("aria-expanded", open); },
   mode(el) {
