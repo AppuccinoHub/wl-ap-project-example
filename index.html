@@ -1064,6 +1064,21 @@ function logGaps(rows) {
   if (rows.some(r => !r.x)) m.push("Some sources have no usable fact written down.");
   return m.length ? m.map(t => "• " + t).join("<br>") : "No obvious gaps. Now check that every factor you will present has at least one trustworthy source.";
 }
+function tsRows() { try { const a = JSON.parse(F("ts") || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+const TS_KINDS = { text: "Article or web text", audio: "Audio (paste a transcript)", chart: "Chart or table (describe it or paste the figures)", image: "Image (describe it)" };
+function teacherSources() {
+  if (isExample()) return "";
+  const rows = tsRows();
+  const editor = `<details class="panel noprint" ${rows.length && !ui.tsOpen ? "" : "open"}><summary><b>Teacher: add practice sources</b> (${rows.length} added)</summary>
+  <p class="muted small">Paste sources your students may use. Only paste material you are allowed to share with students. Nothing is uploaded: it stays in this browser, on this device only. This app never supplies sources.</p>
+  ${rows.map((r, i) => `<div class="itbox logrow"><div class="row"><b>Source ${i + 1}</b><button data-act="tsdel" data-a="${i}" aria-label="Remove source ${i + 1}">Remove</button></div>
+    <label class="f">Title<input type="text" data-ts="${i}.t" value="${esc(r.t || "")}" lang="${LC()}"></label>
+    <label class="f">Kind<select data-ts="${i}.k">${Object.keys(TS_KINDS).map(k => `<option value="${k}" ${(r.k || "text") === k ? "selected" : ""}>${TS_KINDS[k]}</option>`).join("")}</select></label>
+    <label class="f">Text<textarea class="tall" data-ts="${i}.x" lang="${LC()}">${esc(r.x || "")}</textarea></label></div>`).join("")}
+  ${rows.length < 8 ? `<div class="row"><button class="primary" data-act="tsadd">Add a source</button></div>` : `<p class="muted small">Eight is the most.</p>`}</details>`;
+  const shown = rows.filter(r => (r.x || "").trim()).map((r, i) => `<div class="panel"><div class="row between"><h2>Source ${i + 1}</h2><span class="pill">${esc(TS_KINDS[r.k || "text"].split(" (")[0])}</span></div>${r.t ? `<h3 lang="${LC()}">${esc(r.t)}</h3>` : ""}${(r.x || "").split(/\n+/).map(b => `<p lang="${LC()}">${esc(b)}</p>`).join("")}</div>`).join("");
+  return editor + shown;
+}
 function drillLog() {
   if (isExample()) return `<div class="panel" data-nofold><h2>Drill 3 · Source log</h2><p class="muted">The log is for your own research. Leave the worked example to use it.</p></div>`;
   const rows = logRows(), pf = PACK.practice.factors;
@@ -1296,6 +1311,7 @@ ${modeSwitch()}
 ${pr.packetNote ? `<div class="note">${pr.packetNote}</div>` : ""}
 <div class="panel"><h2>The prompt</h2><p lang="en">${esc(pr.prompt.en)}</p>
   <div class="tablewrap"><table><tr><th></th><th>Factors</th><th>Examples</th></tr>${pr.factors.map(f => `<tr><td>${f.group === "persp" ? "Perspectives" : "Products and practices"}</td><td>${f.id}. ${esc(f.name)}</td><td>${esc(f.ex)}</td></tr>`).join("")}</table></div></div>
+${teacherSources()}
 ${pk.map(s => `<div class="panel"><div class="row between"><h2>Source ${s.n}</h2><span class="pill">${s.real}</span></div>
   <p><i>${esc(s.intro)}</i></p>${s.title ? `<h3>${esc(s.title)}</h3>` : ""}
   ${s.audio ? `<div class="row noprint"><button class="primary" data-act="srcplay" data-a="${s.n}">Listen</button><button data-act="srcstop">Stop</button><button data-act="srcshow" data-a="${s.n}">${ui.shown[s.n] ? "Hide the script" : "Show the script"}</button><span class="muted small" role="status" id="srcst${s.n}"></span></div><p class="muted small">This is an audio source: listen first, twice, before you read. The device's voice reads it; your teacher may read it aloud instead.</p>` : ""}
@@ -1376,6 +1392,8 @@ const act = {
   card(el) { const c = CARDS[ui.cards[ui.card]]; ui.cardDone = el.dataset.a; if (ui.cardDone === c.a) ui.score++; render(true); },
   cardnext() { ui.card++; if (ui.card >= CARDS.length) { ui.card = 0; ui.score = 0; ui.cards = shuffle(ui.cards); } ui.cardDone = null; render(true); },
   yn(el) { ui.ynDone = el.dataset.a === "1"; render(true); },
+  tsadd() { const r = tsRows(); if (r.length >= 8) return; r.push({ k: "text" }); ui.tsOpen = true; bag("ts")["ts"] = JSON.stringify(r); commit(); render(true); },
+  tsdel(el) { const r = tsRows(); ui.tsOpen = true; r.splice(+el.dataset.a, 1); bag("ts")["ts"] = JSON.stringify(r); commit(); render(true); },
   srchcheck() { ui.srchOpen = true; render(true); },
   srchnext() { ui.srch++; ui.srchOpen = false; render(true); },
   pvpick(el) { ui.pvPick = +el.dataset.a; render(true); },
@@ -1451,7 +1469,10 @@ document.addEventListener("keydown", e => {
   if (go && t.matches && t.matches(".foldhead")) { e.preventDefault(); toggleFold(t); }
   if (go && t.matches && t.matches("label.btn[for]")) { e.preventDefault(); const i = document.getElementById(t.htmlFor); if (i) i.click(); }
 });
+document.addEventListener("change", e => { if (e.target.dataset && e.target.dataset.ts && current === "pacchetto") render(true); });
 document.addEventListener("input", e => {
+  const ts = e.target.dataset && e.target.dataset.ts;
+  if (ts) { const m = ts.split("."), r = tsRows(); if (r[+m[0]]) { r[+m[0]][m[1]] = e.target.value; bag("ts")["ts"] = JSON.stringify(r); save(); } return; }
   const lg = e.target.dataset && e.target.dataset.log;
   if (lg) { const m = lg.split("."), r = logRows(); if (r[+m[0]]) { r[+m[0]][m[1]] = e.target.value; bag("me.log")["me.log"] = JSON.stringify(r); save(); const g = $("#loggaps"); if (g) g.innerHTML = "<b>Gap check</b><br>" + logGaps(r); } return; }
   const el = e.target, k = el.dataset && el.dataset.k; if (!k) return;
